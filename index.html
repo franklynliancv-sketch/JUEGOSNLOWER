@@ -77,7 +77,6 @@ header {
 .btn-small:hover{border-color:var(--gold);color:var(--gold);background:rgba(255,184,0,0.07);}
 .btn-small.active{border-color:var(--gold);color:var(--gold);background:rgba(255,184,0,0.12);}
 
-/* ── API KEY BAR ── */
 .api-bar{
   position:relative;z-index:19;
   background:rgba(15,21,37,0.97);
@@ -189,7 +188,6 @@ header {
 #send-btn:hover{transform:scale(1.1) rotate(-5deg);}
 #send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
 
-/* TAREAS */
 .task-page{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px;}
 .task-header{display:flex;align-items:center;justify-content:space-between;}
 .task-header h2{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
@@ -214,7 +212,6 @@ header {
 .task-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;transition:color 0.2s;}
 .task-del:hover{color:var(--red);}
 
-/* FINANZAS */
 .finance-page{padding:20px;overflow-y:auto;flex:1;}
 .finance-page h2{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;}
 .finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -236,7 +233,6 @@ header {
 .add-entry select option{background:var(--card);}
 .add-entry button{background:linear-gradient(135deg,var(--green),var(--teal));border:none;color:#000;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;padding:7px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;}
 
-/* CONOCIMIENTO */
 .knowledge-page{padding:20px;overflow-y:auto;flex:1;}
 .knowledge-page h2{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px;}
 .knowledge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
@@ -262,7 +258,6 @@ header {
   <div class="orb orb3"></div><div class="orb orb4"></div>
 </div>
 
-<!-- HEADER -->
 <header>
   <div class="header-left">
     <div class="lion-wrap" onclick="lionReact()" title="¡Haz clic en mí!">
@@ -290,14 +285,12 @@ header {
   </div>
 </header>
 
-<!-- BARRA API KEY GEMINI -->
 <div class="api-bar">
   <label>🔑 Gemini Key:</label>
   <input type="password" id="api-key-input" placeholder="Pega aquí tu API Key de Gemini..." oninput="checkApiKey()">
   <span class="api-status err" id="api-status">⚪ Sin clave</span>
 </div>
 
-<!-- TABS -->
 <div class="tabs">
   <div class="tab active" onclick="switchTab('chat')" id="tab-chat">💬 Chat IA</div>
   <div class="tab" onclick="switchTab('tareas')" id="tab-tareas">✅ Tareas</div>
@@ -305,9 +298,7 @@ header {
   <div class="tab" onclick="switchTab('conocimiento')" id="tab-conocimiento">📚 Conocimiento</div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
-  <!-- SIDEBAR -->
   <div class="sidebar collapsed" id="sidebar">
     <div class="sidebar-header">
       <h3>📋 Historial</h3>
@@ -318,7 +309,6 @@ header {
     </div>
   </div>
 
-  <!-- CHAT PAGE -->
   <div class="chat-panel page active" id="page-chat">
     <div id="chat">
       <div class="welcome" id="welcome-msg">
@@ -360,7 +350,6 @@ header {
     </div>
   </div>
 
-  <!-- TAREAS PAGE -->
   <div class="page" id="page-tareas">
     <div class="task-page">
       <div class="task-header">
@@ -384,7 +373,6 @@ header {
     </div>
   </div>
 
-  <!-- FINANZAS PAGE -->
   <div class="page" id="page-finanzas">
     <div class="finance-page">
       <h2>💰 Balance & Finanzas</h2>
@@ -424,7 +412,6 @@ header {
     </div>
   </div>
 
-  <!-- CONOCIMIENTO PAGE -->
   <div class="page" id="page-conocimiento">
     <div class="knowledge-page">
       <h2>📚 Áreas de Conocimiento</h2>
@@ -471,17 +458,13 @@ header {
 </div>
 
 <script>
-// ════════════════════════════════════════
-// STATE
-// ════════════════════════════════════════
-let conversation = [];  // formato Gemini: [{role:'user'|'model', parts:[{text:''}]}]
+let conversation = [];
 let chatHistory  = JSON.parse(localStorage.getItem('supersist_history') || '[]');
 let tasks        = JSON.parse(localStorage.getItem('supersist_tasks')   || '[]');
 let ingresos     = JSON.parse(localStorage.getItem('supersist_ing')     || '[]');
 let egresos      = JSON.parse(localStorage.getItem('supersist_eg')      || '[]');
 let sidebarOpen  = false;
 
-// Cargar key guardada
 const savedKey = localStorage.getItem('supersist_gemini_key') || '';
 if (savedKey) {
   document.getElementById('api-key-input').value = savedKey;
@@ -502,9 +485,6 @@ PERSONALIDAD: energético, positivo, motivador. Usas emojis 🦁⚡. Frases como
 
 Responde siempre en español. Usa negritas, listas y estructura clara cuando sea necesario.`;
 
-// ════════════════════════════════════════
-// API KEY
-// ════════════════════════════════════════
 function getApiKey() { return document.getElementById('api-key-input').value.trim(); }
 
 function checkApiKey() {
@@ -519,13 +499,10 @@ function checkApiKey() {
 
 function updateApiStatus(ok) {
   const el = document.getElementById('api-status');
-  el.textContent  = ok ? '🟢 Lista' : '⚪ Sin clave';
-  el.className    = 'api-status ' + (ok ? 'ok' : 'err');
+  el.textContent = ok ? '🟢 Lista' : '⚪ Sin clave';
+  el.className   = 'api-status ' + (ok ? 'ok' : 'err');
 }
 
-// ════════════════════════════════════════
-// LION
-// ════════════════════════════════════════
 const reactions = ['😄','🥳','😎','🤩','🦁','⚡','🌟','🎉'];
 function lionReact() {
   const m = document.getElementById('lion-mouth');
@@ -536,12 +513,9 @@ function lionReact() {
 function lionTalking(on) {
   const m = document.getElementById('lion-mouth');
   if (on) { m.classList.add('talking'); m.textContent = '▽'; }
-  else     { m.classList.remove('talking'); m.textContent = '〜'; }
+  else    { m.classList.remove('talking'); m.textContent = '〜'; }
 }
 
-// ════════════════════════════════════════
-// TABS
-// ════════════════════════════════════════
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -549,9 +523,6 @@ function switchTab(name) {
   document.getElementById('page-' + name).classList.add('active');
 }
 
-// ════════════════════════════════════════
-// SIDEBAR / HISTORIAL
-// ════════════════════════════════════════
 function toggleSidebar() {
   sidebarOpen = !sidebarOpen;
   document.getElementById('sidebar').classList.toggle('collapsed', !sidebarOpen);
@@ -597,9 +568,6 @@ function clearHistory() {
   renderHistory();
 }
 
-// ════════════════════════════════════════
-// CHAT — GEMINI 1.5 FLASH
-// ════════════════════════════════════════
 function formatText(t) {
   return t
     .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
@@ -668,8 +636,8 @@ async function sendMessage() {
   showTyping();
 
   try {
-    // ── Gemini 1.5 Flash ──────────────────────────────────
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // ── Gemini 2.0 Flash ──────────────────────────────────
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -729,9 +697,6 @@ function clearAll() {
     </div>`;
 }
 
-// ════════════════════════════════════════
-// TAREAS
-// ════════════════════════════════════════
 function toggleTaskInput() {
   const a = document.getElementById('task-input-area');
   a.style.display = a.style.display === 'none' ? 'block' : 'none';
@@ -769,9 +734,6 @@ function renderTasks() {
     </div>`).join('');
 }
 
-// ════════════════════════════════════════
-// FINANZAS
-// ════════════════════════════════════════
 function addEntry(type) {
   const desc  = document.getElementById(type + '-desc').value.trim();
   const monto = parseFloat(document.getElementById(type + '-monto').value);
@@ -810,13 +772,10 @@ function renderFinance() {
   bEl.style.background = bal >= 0
     ? 'linear-gradient(90deg,var(--green),var(--teal))'
     : 'linear-gradient(90deg,var(--red),var(--orange))';
-  bEl.style['-webkit-background-clip']  = 'text';
-  bEl.style['-webkit-text-fill-color']  = 'transparent';
+  bEl.style['-webkit-background-clip'] = 'text';
+  bEl.style['-webkit-text-fill-color'] = 'transparent';
 }
 
-// ════════════════════════════════════════
-// INPUT
-// ════════════════════════════════════════
 const ta = document.getElementById('user-input');
 ta.addEventListener('input', function () {
   this.style.height = 'auto';
@@ -826,7 +785,6 @@ ta.addEventListener('keydown', function (e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 
-// INIT
 renderTasks();
 renderFinance();
 </script>
