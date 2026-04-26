@@ -1,200 +1,1369 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Para mi Jhanny ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;800&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --rosa-amor: #ff4d6d;
-            --rosa-suave: #fff0f3;
-            --dorado: #ffb703;
-            --texto: #590d22;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUPERSISTᶜᵛ — Tu Asistente Inteligente</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #FFB800;
+  --gold2: #FF8C00;
+  --orange: #FF6B35;
+  --red: #FF3366;
+  --purple: #9B5FFF;
+  --blue: #4FC3F7;
+  --green: #00E676;
+  --teal: #00BCD4;
+  --bg: #0A0E1A;
+  --bg2: #0F1525;
+  --card: #141B2D;
+  --border: #1E2D45;
+  --text: #F0F4FF;
+  --muted: #7B8BA5;
+}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; user-select: none; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-        body {
-            background-color: var(--rosa-suave);
-            font-family: 'Montserrat', sans-serif;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; overflow: hidden; color: var(--texto);
-        }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-        /* TÍTULO Y ESTADÍSTICAS */
-        #header {
-            text-align: center; margin-bottom: 20px; z-index: 10;
-        }
-        h1 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--rosa-amor); text-shadow: 2px 2px 0px white; }
-        .stats { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--rosa-amor); }
+/* ── ANIMATED BG ── */
+.bg-orbs {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orbFloat 12s ease-in-out infinite;
+}
+.orb1 { width:400px;height:400px;background:rgba(255,184,0,0.08);top:-100px;left:-100px;animation-delay:0s; }
+.orb2 { width:300px;height:300px;background:rgba(155,95,255,0.1);bottom:-80px;right:-80px;animation-delay:-4s; }
+.orb3 { width:250px;height:250px;background:rgba(79,195,247,0.08);top:40%;left:30%;animation-delay:-8s; }
+.orb4 { width:200px;height:200px;background:rgba(255,51,102,0.07);bottom:20%;left:10%;animation-delay:-2s; }
 
-        /* EL NARRADOR TROLL */
-        #troll-bubble {
-            background: white; color: black; padding: 15px; border-radius: 15px;
-            font-family: 'Press Start 2P', cursive; font-size: 10px; line-height: 1.6;
-            width: 80%; max-width: 400px; text-align: center;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2);
-            margin-bottom: 30px; z-index: 10;
-            border: 2px solid var(--rosa-amor);
-            animation: float 2s infinite ease-in-out;
-        }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes orbFloat {
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(30px,-20px) scale(1.05);}
+  66%{transform:translate(-20px,15px) scale(0.95);}
+}
 
-        /* EL ÁREA DE JUEGO */
-        #game-area {
-            position: relative; width: 100vw; height: 50vh;
-            display: flex; align-items: center; justify-content: center;
-        }
+/* ── HEADER ── */
+header {
+  position: relative; z-index: 20;
+  background: rgba(10,14,26,0.95);
+  border-bottom: 2px solid rgba(255,184,0,0.2);
+  padding: 10px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 30px rgba(255,184,0,0.08);
+}
 
-        /* EL BOTÓN (Ahí está el trolleo) */
-        #the-button {
-            width: 130px; height: 130px; background: var(--rosa-amor);
-            border-radius: 50%; border: 6px solid #c9184a;
-            box-shadow: 0 10px 0 #c9184a, 0 0 30px rgba(255, 77, 109, 0.4);
-            cursor: pointer; position: absolute; z-index: 50;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 40px; transition: transform 0.1s, top 0.4s ease-out, left 0.4s ease-out;
-        }
-        #the-button:active { transform: translateY(10px) scale(0.95); box-shadow: 0 0 0 #c9184a; }
+.header-left { display:flex; align-items:center; gap:14px; }
 
-        /* PANTALLA FINAL */
-        #win-screen {
-            position: fixed; inset: 0; background: var(--rosa-amor);
-            display: none; flex-direction: column; align-items: center;
-            justify-content: center; z-index: 100; text-align: center; color: white;
-            padding: 20px;
-        }
+/* LION MASCOT */
+.lion-wrap {
+  position: relative;
+  width: 58px; height: 58px;
+  cursor: pointer;
+}
 
-        /* EFECTOS VISUALES */
-        .confetti { position: absolute; width: 10px; height: 10px; background: var(--dorado); border-radius: 50%; pointer-events: none; }
-    </style>
+.lion-body {
+  width: 58px; height: 58px;
+  background: linear-gradient(135deg, #FFB800, #FF8C00);
+  border-radius: 50%;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 20px rgba(255,184,0,0.5), 0 0 40px rgba(255,184,0,0.2);
+  animation: lionBounce 3s ease-in-out infinite;
+  overflow: visible;
+}
+
+@keyframes lionBounce {
+  0%,100%{transform:translateY(0) rotate(-2deg);}
+  50%{transform:translateY(-5px) rotate(2deg);}
+}
+
+/* Mane */
+.lion-body::before {
+  content:'';
+  position:absolute;
+  width:68px; height:68px;
+  background: radial-gradient(circle, #FF6B35 0%, #FF8C00 40%, transparent 70%);
+  border-radius:50%;
+  z-index:-1;
+  top:-5px; left:-5px;
+  animation: manePulse 2s ease-in-out infinite;
+}
+@keyframes manePulse {
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+}
+
+.lion-face { position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+
+/* Eyes */
+.lion-eyes {
+  position:absolute;
+  top:36%; left:50%;
+  transform:translateX(-50%);
+  display:flex; gap:10px;
+}
+.eye {
+  width:9px; height:9px;
+  background:#1A0A00;
+  border-radius:50%;
+  position:relative;
+  animation: eyeBlink 4s ease-in-out infinite;
+}
+.eye::after { /* pupil shine */
+  content:'';
+  position:absolute;
+  width:3px;height:3px;
+  background:white;
+  border-radius:50%;
+  top:1px;left:1px;
+}
+@keyframes eyeBlink {
+  0%,45%,55%,100%{transform:scaleY(1);}
+  50%{transform:scaleY(0.05);}
+}
+/* Eye look around */
+.eye.look {
+  animation: eyeLook 6s ease-in-out infinite, eyeBlink 4s ease-in-out infinite;
+}
+@keyframes eyeLook {
+  0%,100%{transform:translate(0,0);}
+  20%{transform:translate(2px,0);}
+  40%{transform:translate(-2px,1px);}
+  60%{transform:translate(0,-1px);}
+  80%{transform:translate(1px,1px);}
+}
+
+/* Nose */
+.lion-nose {
+  position:absolute;
+  top:52%;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:11px;
+  animation: noseWiggle 5s ease-in-out infinite;
+}
+@keyframes noseWiggle {
+  0%,100%{transform:translateX(-50%) rotate(0);}
+  25%{transform:translateX(-48%) rotate(-3deg);}
+  75%{transform:translateX(-52%) rotate(3deg);}
+}
+
+/* Mouth */
+.lion-mouth {
+  position:absolute;
+  top:64%;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:9px;
+  animation: mouthTalk 0.3s ease-in-out infinite paused;
+}
+.lion-mouth.talking {
+  animation-play-state: running;
+}
+@keyframes mouthTalk {
+  0%,100%{transform:translateX(-50%) scaleY(1);}
+  50%{transform:translateX(-50%) scaleY(0.3);}
+}
+
+/* Ears */
+.lion-ear {
+  position:absolute;
+  width:14px; height:14px;
+  background:linear-gradient(135deg,#FF8C00,#FFB800);
+  border-radius:50% 50% 0 50%;
+  top:-6px;
+}
+.lion-ear.left{left:4px;transform:rotate(-30deg);}
+.lion-ear.right{right:4px;transform:rotate(30deg) scaleX(-1);}
+.lion-ear::after {
+  content:'';
+  position:absolute;
+  width:7px;height:7px;
+  background:#FF6B35;
+  border-radius:50%;
+  top:3px;left:3px;
+}
+
+/* Status ring */
+.lion-wrap::after {
+  content:'';
+  position:absolute;
+  inset:-4px;
+  border-radius:50%;
+  background: conic-gradient(var(--gold), var(--purple), var(--blue), var(--green), var(--gold));
+  z-index:-1;
+  animation: ringRotate 3s linear infinite;
+}
+@keyframes ringRotate { to{transform:rotate(360deg);} }
+
+.brand { }
+.brand h1 {
+  font-family:'Baloo 2',cursive;
+  font-size:22px;
+  font-weight:800;
+  background: linear-gradient(90deg, var(--gold), var(--orange), var(--red), var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-size:200%;
+  animation: textShimmer 3s linear infinite;
+  letter-spacing:0.03em;
+}
+@keyframes textShimmer {
+  0%{background-position:0%;}
+  100%{background-position:200%;}
+}
+.brand p {
+  font-size:11px;
+  color:var(--muted);
+  font-weight:600;
+  letter-spacing:0.08em;
+}
+
+.header-right { display:flex; align-items:center; gap:10px; }
+
+.btn-small {
+  background:transparent;
+  border:1.5px solid var(--border);
+  color:var(--muted);
+  padding:5px 12px;
+  border-radius:20px;
+  font-family:'Nunito',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-small:hover { border-color:var(--gold); color:var(--gold); background:rgba(255,184,0,0.07); }
+.btn-small.active { border-color:var(--gold); color:var(--gold); background:rgba(255,184,0,0.12); }
+
+/* ── TABS ── */
+.tabs {
+  position:relative; z-index:15;
+  display:flex;
+  background:rgba(15,21,37,0.9);
+  border-bottom:2px solid var(--border);
+  padding:0 16px;
+  gap:4px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none;}
+
+.tab {
+  padding:10px 16px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--muted);
+  cursor:pointer;
+  white-space:nowrap;
+  border-bottom:3px solid transparent;
+  transition:all 0.2s;
+  display:flex; align-items:center; gap:6px;
+  margin-bottom:-2px;
+}
+.tab:hover{color:var(--text);}
+.tab.active{
+  color:var(--gold);
+  border-bottom-color:var(--gold);
+}
+
+/* ── MAIN LAYOUT ── */
+.main {
+  flex:1;
+  display:flex;
+  overflow:hidden;
+  position:relative; z-index:10;
+}
+
+/* ── SIDEBAR HISTORIAL ── */
+.sidebar {
+  width:240px;
+  background:rgba(15,21,37,0.95);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  transition:width 0.3s;
+}
+.sidebar.collapsed { width:0; }
+
+.sidebar-header {
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.sidebar-header h3 {
+  font-size:13px; font-weight:800;
+  background:linear-gradient(90deg,var(--gold),var(--orange));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.history-list {
+  flex:1; overflow-y:auto;
+  padding:10px;
+  display:flex; flex-direction:column; gap:6px;
+}
+.history-list::-webkit-scrollbar{width:3px;}
+.history-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+.hist-item {
+  padding:10px 12px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  cursor:pointer;
+  transition:all 0.2s;
+  animation:fadeIn 0.3s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
+.hist-item:hover { border-color:var(--gold); background:rgba(255,184,0,0.06); }
+.hist-item .hist-title {
+  font-size:12px; font-weight:700; color:var(--text);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.hist-item .hist-time {
+  font-size:10px; color:var(--muted); margin-top:3px;
+}
+.hist-item .hist-preview {
+  font-size:11px; color:var(--muted); margin-top:4px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* ── CHAT PANEL ── */
+.chat-panel {
+  flex:1;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+
+/* ── PAGE PANELS ── */
+.page {
+  display:none;
+  flex:1; flex-direction:column;
+  overflow:hidden;
+}
+.page.active { display:flex; }
+
+/* ── CHAT AREA ── */
+#chat {
+  flex:1;
+  overflow-y:auto;
+  padding:20px;
+  display:flex; flex-direction:column; gap:16px;
+  scroll-behavior:smooth;
+}
+#chat::-webkit-scrollbar{width:4px;}
+#chat::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* Welcome */
+.welcome {
+  display:flex; flex-direction:column; align-items:center;
+  gap:14px; padding:30px 20px; text-align:center;
+  animation:welcomeIn 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes welcomeIn {
+  from{opacity:0;transform:scale(0.8) translateY(30px);}
+  to{opacity:1;transform:scale(1) translateY(0);}
+}
+
+.welcome-lion {
+  width:90px;height:90px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:50px;
+  box-shadow:0 0 40px rgba(255,184,0,0.4);
+  animation:welcomeFloat 3s ease-in-out infinite;
+  position:relative;
+}
+.welcome-lion::before {
+  content:'';
+  position:absolute; inset:-8px;
+  border-radius:50%;
+  background:conic-gradient(var(--gold),var(--purple),var(--blue),var(--green),var(--gold));
+  z-index:-1;
+  animation:ringRotate 4s linear infinite;
+}
+@keyframes welcomeFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+
+.welcome h2 {
+  font-family:'Baloo 2',cursive;
+  font-size:26px; font-weight:800;
+  background:linear-gradient(90deg,var(--gold),var(--orange),var(--red));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.welcome p {font-size:13px;color:var(--muted);max-width:380px;line-height:1.6;}
+
+.areas-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:8px; width:100%; max-width:480px;
+}
+.area-card {
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:12px;
+  padding:10px;
+  cursor:pointer;
+  transition:all 0.25s;
+  text-align:left;
+}
+.area-card:hover {
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px rgba(0,0,0,0.3);
+}
+.area-card:nth-child(1){border-color:rgba(255,184,0,0.3);}
+.area-card:nth-child(1):hover{border-color:var(--gold);background:rgba(255,184,0,0.07);}
+.area-card:nth-child(2){border-color:rgba(255,51,102,0.3);}
+.area-card:nth-child(2):hover{border-color:var(--red);background:rgba(255,51,102,0.07);}
+.area-card:nth-child(3){border-color:rgba(79,195,247,0.3);}
+.area-card:nth-child(3):hover{border-color:var(--blue);background:rgba(79,195,247,0.07);}
+.area-card:nth-child(4){border-color:rgba(155,95,255,0.3);}
+.area-card:nth-child(4):hover{border-color:var(--purple);background:rgba(155,95,255,0.07);}
+.area-card:nth-child(5){border-color:rgba(0,230,118,0.3);}
+.area-card:nth-child(5):hover{border-color:var(--green);background:rgba(0,230,118,0.07);}
+.area-card:nth-child(6){border-color:rgba(0,188,212,0.3);}
+.area-card:nth-child(6):hover{border-color:var(--teal);background:rgba(0,188,212,0.07);}
+.area-card .area-icon{font-size:20px;margin-bottom:5px;}
+.area-card .area-name{font-size:11px;font-weight:800;color:var(--text);}
+.area-card .area-desc{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3;}
+
+/* Messages */
+.msg {
+  display:flex; gap:10px;
+  animation:msgPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  max-width:780px;
+}
+@keyframes msgPop {
+  from{opacity:0;transform:scale(0.85) translateY(10px);}
+  to{opacity:1;transform:scale(1) translateY(0);}
+}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.msg.ai{align-self:flex-start;}
+
+.msg-avatar {
+  width:38px;height:38px;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+  position:relative;
+}
+.msg.user .msg-avatar{
+  background:linear-gradient(135deg,#1E3A5F,#2563EB);
+  border:2px solid rgba(37,99,235,0.4);
+}
+.msg.ai .msg-avatar{
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border:2px solid rgba(255,184,0,0.4);
+  box-shadow:0 0 15px rgba(255,184,0,0.3);
+  animation:avatarPulse 2s ease-in-out infinite;
+}
+@keyframes avatarPulse{
+  0%,100%{box-shadow:0 0 15px rgba(255,184,0,0.3);}
+  50%{box-shadow:0 0 25px rgba(255,184,0,0.6);}
+}
+
+.msg-content{display:flex;flex-direction:column;gap:3px;}
+.msg-name{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+.msg.user .msg-name{text-align:right;}
+
+.msg-bubble {
+  padding:12px 16px;
+  border-radius:16px;
+  font-size:13.5px;
+  line-height:1.65;
+  max-width:560px;
+}
+.msg.user .msg-bubble {
+  background:linear-gradient(135deg,#1a2744,#1e3a6e);
+  border:1.5px solid rgba(37,99,235,0.3);
+  border-top-right-radius:4px;
+}
+.msg.ai .msg-bubble {
+  background:var(--card);
+  border:1.5px solid rgba(255,184,0,0.2);
+  border-top-left-radius:4px;
+}
+.msg-bubble strong{color:var(--gold);font-weight:800;}
+.msg-bubble em{color:var(--purple);}
+.msg-bubble code{
+  font-family:monospace;
+  background:rgba(0,0,0,0.4);
+  padding:2px 6px;border-radius:4px;
+  font-size:12px;color:var(--blue);
+}
+.msg-bubble pre{
+  background:rgba(0,0,0,0.5);
+  border:1px solid var(--border);
+  border-radius:8px;padding:12px;
+  margin:8px 0;overflow-x:auto;
+  font-size:12px;color:var(--green);
+}
+
+/* Typing */
+.typing-bubble{display:flex;gap:5px;align-items:center;padding:14px 16px;}
+.typing-bubble span{
+  width:8px;height:8px;border-radius:50%;
+  animation:typeDot 1.2s ease-in-out infinite;
+}
+.typing-bubble span:nth-child(1){background:var(--gold);animation-delay:0s;}
+.typing-bubble span:nth-child(2){background:var(--orange);animation-delay:0.2s;}
+.typing-bubble span:nth-child(3){background:var(--red);animation-delay:0.4s;}
+@keyframes typeDot{
+  0%,60%,100%{transform:translateY(0);opacity:0.5;}
+  30%{transform:translateY(-10px);opacity:1;}
+}
+
+/* ── INPUT AREA ── */
+.input-zone {
+  padding:14px 20px;
+  background:rgba(10,14,26,0.97);
+  border-top:2px solid rgba(255,184,0,0.15);
+  position:relative; z-index:15;
+}
+.input-row{display:flex;gap:10px;align-items:flex-end;max-width:800px;margin:0 auto;}
+.input-wrap {
+  flex:1;
+  background:var(--card);
+  border:2px solid var(--border);
+  border-radius:16px;
+  transition:all 0.2s;
+  overflow:hidden;
+}
+.input-wrap:focus-within{
+  border-color:rgba(255,184,0,0.5);
+  box-shadow:0 0 0 3px rgba(255,184,0,0.1), 0 0 25px rgba(255,184,0,0.12);
+}
+#user-input {
+  width:100%;background:transparent;border:none;outline:none;
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;
+  padding:13px 16px;resize:none;max-height:130px;min-height:48px;
+  line-height:1.5;
+}
+#user-input::placeholder{color:var(--muted);}
+.input-footer2{padding:4px 12px 10px;display:flex;justify-content:space-between;align-items:center;}
+.input-hint2{font-size:10px;color:var(--border);font-weight:700;}
+
+#send-btn {
+  width:50px;height:50px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border:none;border-radius:14px;cursor:pointer;
+  font-size:22px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px rgba(255,184,0,0.3);
+  transition:all 0.2s;
+  flex-shrink:0;
+}
+#send-btn:hover{transform:scale(1.1) rotate(-5deg);box-shadow:0 0 35px rgba(255,184,0,0.5);}
+#send-btn:active{transform:scale(0.95);}
+#send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+/* ── TAREAS PAGE ── */
+.task-page{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px;}
+
+.task-header{display:flex;align-items:center;justify-content:space-between;}
+.task-header h2{
+  font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;
+  background:linear-gradient(90deg,var(--gold),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.add-task-btn{
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border:none;color:#000;font-family:'Nunito',sans-serif;
+  font-weight:800;font-size:13px;
+  padding:8px 18px;border-radius:20px;cursor:pointer;
+  transition:all 0.2s;display:flex;align-items:center;gap:6px;
+}
+.add-task-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,184,0,0.3);}
+
+.task-input-row{
+  display:flex;gap:10px;
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  padding:12px 16px;
+  animation:slideDown 0.3s ease;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+.task-input-row input, .task-input-row select{
+  background:transparent;border:none;outline:none;
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;
+}
+.task-input-row input{flex:1;}
+.task-input-row select option{background:var(--card);}
+
+.tasks-list{display:flex;flex-direction:column;gap:8px;}
+.task-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:12px;padding:12px 16px;
+  transition:all 0.25s;
+  animation:taskIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes taskIn{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
+.task-item:hover{border-color:rgba(255,184,0,0.3);transform:translateX(4px);}
+.task-item.done{opacity:0.5;}
+.task-item.done .task-text{text-decoration:line-through;color:var(--muted);}
+
+.task-check{
+  width:20px;height:20px;
+  border:2px solid var(--border);border-radius:6px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all 0.2s;font-size:12px;
+}
+.task-check.checked{background:linear-gradient(135deg,var(--green),var(--teal));border-color:var(--green);}
+.task-text{flex:1;font-size:13px;font-weight:600;}
+.task-badge{
+  padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;
+  flex-shrink:0;
+}
+.badge-high{background:rgba(255,51,102,0.2);color:var(--red);border:1px solid rgba(255,51,102,0.3);}
+.badge-med{background:rgba(255,184,0,0.2);color:var(--gold);border:1px solid rgba(255,184,0,0.3);}
+.badge-low{background:rgba(0,230,118,0.2);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
+.task-del{
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  font-size:16px;transition:color 0.2s;
+}
+.task-del:hover{color:var(--red);}
+
+/* ── FINANZAS PAGE ── */
+.finance-page{padding:20px;overflow-y:auto;flex:1;}
+.finance-page h2{
+  font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;
+  background:linear-gradient(90deg,var(--green),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:16px;
+}
+.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+.finance-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:14px;padding:16px;
+}
+.finance-card h3{font-size:13px;font-weight:800;margin-bottom:12px;color:var(--text);}
+
+.balance-table{width:100%;border-collapse:collapse;}
+.balance-table th{
+  font-size:10px;font-weight:800;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.08em;
+  padding:6px 8px;text-align:left;
+  border-bottom:1px solid var(--border);
+}
+.balance-table td{
+  padding:7px 8px;font-size:12px;font-weight:600;
+  border-bottom:1px solid rgba(30,45,69,0.5);
+}
+.balance-table tr:last-child td{border-bottom:none;}
+.balance-table .total-row td{
+  font-weight:800;color:var(--gold);
+  border-top:2px solid var(--border);
+}
+.pos{color:var(--green)!important;}
+.neg{color:var(--red)!important;}
+
+.kpi-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.kpi{
+  flex:1;min-width:100px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:10px;padding:12px;text-align:center;
+}
+.kpi .kpi-val{
+  font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;
+  background:linear-gradient(90deg,var(--gold),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.kpi .kpi-label{font-size:10px;color:var(--muted);font-weight:700;margin-top:2px;}
+
+.add-entry{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.add-entry input,.add-entry select{
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:12px;
+  padding:7px 10px;border-radius:8px;outline:none;
+  transition:border-color 0.2s;
+}
+.add-entry input{flex:1;min-width:80px;}
+.add-entry input:focus,.add-entry select:focus{border-color:var(--gold);}
+.add-entry select option{background:var(--card);}
+.add-entry button{
+  background:linear-gradient(135deg,var(--green),var(--teal));
+  border:none;color:#000;font-family:'Nunito',sans-serif;
+  font-weight:800;font-size:12px;
+  padding:7px 14px;border-radius:8px;cursor:pointer;
+  transition:all 0.2s;white-space:nowrap;
+}
+.add-entry button:hover{transform:scale(1.05);}
+
+/* ── MEMORY/CONOCIMIENTO PAGE ── */
+.knowledge-page{padding:20px;overflow-y:auto;flex:1;}
+.knowledge-page h2{
+  font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;
+  background:linear-gradient(90deg,var(--purple),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:14px;
+}
+.knowledge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.know-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:14px;padding:14px;
+  transition:all 0.2s;
+}
+.know-card:hover{border-color:rgba(155,95,255,0.4);transform:translateY(-2px);}
+.know-card .know-icon{font-size:26px;margin-bottom:8px;}
+.know-card h3{font-size:13px;font-weight:800;margin-bottom:6px;}
+.know-card p{font-size:11px;color:var(--muted);line-height:1.5;}
+.know-card .topics{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
+.topic-tag{
+  padding:2px 8px;border-radius:20px;
+  font-size:10px;font-weight:800;
+  background:rgba(155,95,255,0.15);
+  color:#c4b5fd;
+  border:1px solid rgba(155,95,255,0.3);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .sidebar{display:none;}
+  .finance-grid{grid-template-columns:1fr;}
+  .knowledge-grid{grid-template-columns:1fr;}
+  .areas-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
 </head>
 <body>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+</div>
 
-    <div id="header">
-        <h1>Para Jhanny</h1>
-        <div class="stats">Nivel: <span id="lvl">1</span>/3 | Intentos: <span id="clicks">0</span></div>
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="lion-wrap" onclick="lionReact()" title="¡Haz clic en mí!">
+      <div class="lion-body">
+        <div class="lion-ear left"></div>
+        <div class="lion-ear right"></div>
+        <div class="lion-face">
+          <div class="lion-eyes">
+            <div class="eye look"></div>
+            <div class="eye look" style="animation-delay:0.1s"></div>
+          </div>
+          <div class="lion-nose">🔸</div>
+          <div class="lion-mouth" id="lion-mouth">〜</div>
+        </div>
+      </div>
     </div>
-
-    <div id="troll-bubble">¿Podrás atrapar el "SÍ" de este León? Jajaja.</div>
-
-    <div id="game-area">
-        <div id="the-button" onclick="handlePress()">🦁</div>
+    <div class="brand">
+      <h1>SUPERSISTᶜᵛ</h1>
+      <p>🦁 Tu Asistente Inteligente · FranlowerCV</p>
     </div>
+  </div>
+  <div class="header-right">
+    <button class="btn-small" onclick="toggleSidebar()" id="hist-btn">📋 Historial</button>
+    <button class="btn-small" onclick="clearAll()">🔄 Nuevo</button>
+  </div>
+</header>
 
-    <div id="win-screen">
-        <h1 style="font-family: 'Dancing Script'; font-size: 4rem;">¡BOOYAH! ❤️</h1>
-        <p style="margin: 20px 0; font-size: 1.2rem;">Jhanny, eres persistente... ¡Me encanta! Admitiré que te ganaste mi "SÍ" y mi corazón.</p>
-        <div style="font-size: 80px;">🦁💖👸🏻</div>
-        <button onclick="location.reload()" style="margin-top: 30px; padding: 10px 20px; border-radius: 10px; border: none; font-weight: bold; background: white; color: var(--rosa-amor);">REPETIR</button>
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('chat')" id="tab-chat">💬 Chat IA</div>
+  <div class="tab" onclick="switchTab('tareas')" id="tab-tareas">✅ Tareas</div>
+  <div class="tab" onclick="switchTab('finanzas')" id="tab-finanzas">💰 Finanzas</div>
+  <div class="tab" onclick="switchTab('conocimiento')" id="tab-conocimiento">📚 Conocimiento</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR HISTORIAL -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h3>📋 Historial</h3>
+      <button class="btn-small" onclick="clearHistory()" style="font-size:10px;padding:3px 8px;">Limpiar</button>
     </div>
+    <div class="history-list" id="history-list">
+      <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px;">Aún no hay conversaciones</div>
+    </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script>
-        const btn = document.getElementById('the-button');
-        const bubble = document.getElementById('troll-bubble');
-        let clicks = 0;
-        let level = 1;
-        let btnMoving = false;
+  <!-- CHAT PAGE -->
+  <div class="chat-panel page active" id="page-chat">
+    <div id="chat">
+      <div class="welcome" id="welcome-msg">
+        <div class="welcome-lion">🦁</div>
+        <h2>¡Hola! Soy SUPERSISTᶜᵛ</h2>
+        <p>Tu asistente inteligente creado por <strong style="color:var(--gold)">FranlowerCV</strong>. Domino Administración, Enfermería, Sistemas, Economía, Mentoría y más. ¡Pregúntame lo que quieras!</p>
+        <div class="areas-grid">
+          <div class="area-card" onclick="quickSend('¿Qué temas de Administración de Empresas puedes enseñarme?')">
+            <div class="area-icon">🏢</div>
+            <div class="area-name">Administración</div>
+            <div class="area-desc">Gestión, organización, estrategia</div>
+          </div>
+          <div class="area-card" onclick="quickSend('Explícame conceptos de Enfermería Técnica')">
+            <div class="area-icon">🏥</div>
+            <div class="area-name">Enfermería</div>
+            <div class="area-desc">Salud, cuidados, técnicas</div>
+          </div>
+          <div class="area-card" onclick="quickSend('Ayúdame con Ingeniería de Sistemas')">
+            <div class="area-icon">💻</div>
+            <div class="area-name">Sistemas</div>
+            <div class="area-desc">Programación, redes, SO</div>
+          </div>
+          <div class="area-card" onclick="quickSend('Explícame sobre Economía y sus conceptos principales')">
+            <div class="area-icon">📈</div>
+            <div class="area-name">Economía</div>
+            <div class="area-desc">Macro, micro, mercados</div>
+          </div>
+          <div class="area-card" onclick="quickSend('Dame consejos de mentoría y gestión')">
+            <div class="area-icon">🎯</div>
+            <div class="area-name">Mentoría</div>
+            <div class="area-desc">Liderazgo, coaching, gestión</div>
+          </div>
+          <div class="area-card" onclick="quickSend('Ayúdame con finanzas corporativas y balances')">
+            <div class="area-icon">💰</div>
+            <div class="area-name">Finanzas</div>
+            <div class="area-desc">CAPM, ratios, balances</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="input-zone">
+      <div class="input-row">
+        <div class="input-wrap">
+          <textarea id="user-input" placeholder="Pregúntale algo a SUPERSISTᶜᵛ 🦁..." rows="1"></textarea>
+          <div class="input-footer2">
+            <span class="input-hint2">Enter enviar · Shift+Enter nueva línea</span>
+          </div>
+        </div>
+        <button id="send-btn" onclick="sendMessage()" title="Enviar">🚀</button>
+      </div>
+    </div>
+  </div>
 
-        const trollMessages = [
-            "¿Tú me quieres? Jajaja a ver si es cierto.", "¿Eso fue un clic o un espasmo?", "¡Qué terca eres, Jhanny!", 
-            "Mi abuela es más rápida tocando botones.", "¿Así persigues lo que quieres?", "¡Trolleadísima!", 
-            "El SÍ es lava, ¡no lo toques!", "¿Ya te cansaste de fracasar?", "¡Por ahí no es!", 
-            "Ese dedo necesita vitaminas.", "¿Necesitas un mapa para encontrarme?", "Casi... pero NO.", 
-            "Instalando modo 'para bebés'...", "¿Sentiste eso? Fue el viento de mi velocidad.", "¡Uupsi! Por aquí no.",
-            "¡Eres un meme andante!", "No sirves para esto, acéptalo.", "¿Te ríndes?", "Cada clic es un castigo, no un amor.",
-            "El León está muy ocupado para tus clics.", "¡No me toques!", "¿No tienes nada mejor que hacer?", "¡Me muero de risa!",
-            "Esa puntería... nivel 1.", "Si sigues, llamo a la policía del amor.", "¿Segura que no quieres rendirte?",
-            "¡Qué risa me das!", "Error 404: Habilidad no encontrada.", "¿Ya lloraste?", "Me estoy enojando, Jhanny...",
-            "¡Casi te doy el SÍ! Mentira 😂", "A este paso terminamos en 2030.", "No me vas a atrapar nunca.", 
-            "¡Qué flojera das!", "¿Ya te cansaste de perder?", "Sigue intentando, exploradora de pacotilla.",
-            "¡Atrapado! Ah no, fui yo.", "¡Qué pesada eres!", "Ya casi se me acaba la paciencia...", 
-            "PRESIONA UNA VEZ MÁS... ¡SI PUEDES!"
-        ];
+  <!-- TAREAS PAGE -->
+  <div class="page" id="page-tareas">
+    <div class="task-page">
+      <div class="task-header">
+        <h2>✅ Organizador de Tareas</h2>
+        <button class="add-task-btn" onclick="toggleTaskInput()">➕ Nueva tarea</button>
+      </div>
+      <div id="task-input-area" style="display:none;">
+        <div class="task-input-row">
+          <input type="text" id="task-text-inp" placeholder="Describe la tarea..." style="font-size:13px;">
+          <select id="task-priority" style="color:var(--text);">
+            <option value="high">🔴 Alta</option>
+            <option value="med" selected>🟡 Media</option>
+            <option value="low">🟢 Baja</option>
+          </select>
+          <button onclick="addTask()" style="background:linear-gradient(135deg,var(--gold),var(--orange));border:none;color:#000;font-family:'Nunito',sans-serif;font-weight:800;padding:8px 16px;border-radius:10px;cursor:pointer;">✓ Agregar</button>
+        </div>
+      </div>
+      <div id="tasks-list" class="tasks-list">
+        <div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">
+          🦁 ¡Agrega tu primera tarea!
+        </div>
+      </div>
+    </div>
+  </div>
 
-        // Mover Jhanny (Emoji de Princesa) al lugar del clic
-        document.body.addEventListener('click', (e) => {
-            if(e.target.id === 'the-button' || btnMoving) return;
-            const princess = document.createElement('div');
-            princess.innerText = '👸🏻';
-            princess.style.position = 'fixed';
-            princess.style.fontSize = '30px';
-            princess.style.left = e.clientX - 15 + 'px';
-            princess.style.top = e.clientY - 15 + 'px';
-            princess.style.pointerEvents = 'none';
-            princess.style.zIndex = '100';
-            princess.style.transition = 'opacity 1s';
-            document.body.appendChild(princess);
-            setTimeout(() => { princess.style.opacity = '0'; setTimeout(() => princess.remove(), 1000); }, 100);
-        });
+  <!-- FINANZAS PAGE -->
+  <div class="page" id="page-finanzas">
+    <div class="finance-page">
+      <h2>💰 Balance & Finanzas</h2>
+      <div class="kpi-row" id="kpi-row">
+        <div class="kpi"><div class="kpi-val" id="kpi-ingresos">S/ 0</div><div class="kpi-label">Total Ingresos</div></div>
+        <div class="kpi"><div class="kpi-val" id="kpi-egresos" style="background:linear-gradient(90deg,var(--red),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">S/ 0</div><div class="kpi-label">Total Egresos</div></div>
+        <div class="kpi"><div class="kpi-val" id="kpi-balance" style="background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">S/ 0</div><div class="kpi-label">Balance Neto</div></div>
+      </div>
+      <div class="finance-grid">
+        <div class="finance-card">
+          <h3>📥 Ingresos</h3>
+          <div class="add-entry">
+            <input type="text" id="ing-desc" placeholder="Concepto">
+            <input type="number" id="ing-monto" placeholder="Monto" style="width:90px;">
+            <button onclick="addEntry('ing')">+ Añadir</button>
+          </div>
+          <table class="balance-table" style="margin-top:10px;" id="ing-table">
+            <thead><tr><th>Concepto</th><th>Monto (S/)</th></tr></thead>
+            <tbody id="ing-body"></tbody>
+            <tfoot><tr class="total-row"><td>TOTAL</td><td id="ing-total">0.00</td></tr></tfoot>
+          </table>
+        </div>
+        <div class="finance-card">
+          <h3>📤 Egresos</h3>
+          <div class="add-entry">
+            <input type="text" id="eg-desc" placeholder="Concepto">
+            <input type="number" id="eg-monto" placeholder="Monto" style="width:90px;">
+            <button onclick="addEntry('eg')" style="background:linear-gradient(135deg,var(--red),var(--orange));">+ Añadir</button>
+          </div>
+          <table class="balance-table" style="margin-top:10px;" id="eg-table">
+            <thead><tr><th>Concepto</th><th>Monto (S/)</th></tr></thead>
+            <tbody id="eg-body"></tbody>
+            <tfoot><tr class="total-row"><td>TOTAL</td><td id="eg-total">0.00</td></tr></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function handlePress() {
-            if(btnMoving) return; // Evitar spam de clics
-            clicks++;
-            document.getElementById('clicks').innerText = clicks;
-            
-            // Efecto Confeti tierno
-            confetti({ particleCount: 20, spread: 30, colors: ['#ff4d6d', '#ffb703'], origin: { y: 0.7 } });
+  <!-- CONOCIMIENTO PAGE -->
+  <div class="page" id="page-conocimiento">
+    <div class="knowledge-page">
+      <h2>📚 Áreas de Conocimiento</h2>
+      <div class="knowledge-grid">
+        <div class="know-card">
+          <div class="know-icon">🏢</div>
+          <h3 style="color:var(--gold)">Administración de Empresas</h3>
+          <p>Gestión organizacional, planeamiento estratégico, recursos humanos, marketing, operaciones y más.</p>
+          <div class="topics">
+            <span class="topic-tag">FODA</span><span class="topic-tag">5 Fuerzas</span>
+            <span class="topic-tag">BMC</span><span class="topic-tag">KPIs</span>
+            <span class="topic-tag">Liderazgo</span><span class="topic-tag">RRHH</span>
+          </div>
+        </div>
+        <div class="know-card">
+          <div class="know-icon">🏥</div>
+          <h3 style="color:var(--red)">Enfermería Técnica</h3>
+          <p>Cuidados básicos, procedimientos clínicos, farmacología esencial, primeros auxilios y salud comunitaria.</p>
+          <div class="topics">
+            <span class="topic-tag" style="background:rgba(255,51,102,0.15);color:#fca5a5;border-color:rgba(255,51,102,0.3);">Anatomía</span>
+            <span class="topic-tag" style="background:rgba(255,51,102,0.15);color:#fca5a5;border-color:rgba(255,51,102,0.3);">Farmaco</span>
+            <span class="topic-tag" style="background:rgba(255,51,102,0.15);color:#fca5a5;border-color:rgba(255,51,102,0.3);">Primeros Auxilios</span>
+          </div>
+        </div>
+        <div class="know-card">
+          <div class="know-icon">💻</div>
+          <h3 style="color:var(--blue)">Ingeniería de Sistemas</h3>
+          <p>Programación, bases de datos, redes, sistemas operativos, análisis de sistemas e inteligencia artificial.</p>
+          <div class="topics">
+            <span class="topic-tag" style="background:rgba(79,195,247,0.15);color:#93c5fd;border-color:rgba(79,195,247,0.3);">Python</span>
+            <span class="topic-tag" style="background:rgba(79,195,247,0.15);color:#93c5fd;border-color:rgba(79,195,247,0.3);">SQL</span>
+            <span class="topic-tag" style="background:rgba(79,195,247,0.15);color:#93c5fd;border-color:rgba(79,195,247,0.3);">Redes</span>
+            <span class="topic-tag" style="background:rgba(79,195,247,0.15);color:#93c5fd;border-color:rgba(79,195,247,0.3);">IA</span>
+          </div>
+        </div>
+        <div class="know-card">
+          <div class="know-icon">📈</div>
+          <h3 style="color:var(--green)">Economía</h3>
+          <p>Macroeconomía, microeconomía, economía peruana, mercados financieros, indicadores y políticas económicas.</p>
+          <div class="topics">
+            <span class="topic-tag" style="background:rgba(0,230,118,0.15);color:#6ee7b7;border-color:rgba(0,230,118,0.3);">PBI</span>
+            <span class="topic-tag" style="background:rgba(0,230,118,0.15);color:#6ee7b7;border-color:rgba(0,230,118,0.3);">Inflación</span>
+            <span class="topic-tag" style="background:rgba(0,230,118,0.15);color:#6ee7b7;border-color:rgba(0,230,118,0.3);">Mercados</span>
+          </div>
+        </div>
+        <div class="know-card">
+          <div class="know-icon">🎯</div>
+          <h3 style="color:var(--orange)">Mentoría & Gestión</h3>
+          <p>Coaching, liderazgo transformacional, gestión de equipos, productividad personal y desarrollo profesional.</p>
+          <div class="topics">
+            <span class="topic-tag" style="background:rgba(255,107,53,0.15);color:#fdba74;border-color:rgba(255,107,53,0.3);">Coaching</span>
+            <span class="topic-tag" style="background:rgba(255,107,53,0.15);color:#fdba74;border-color:rgba(255,107,53,0.3);">OKRs</span>
+            <span class="topic-tag" style="background:rgba(255,107,53,0.15);color:#fdba74;border-color:rgba(255,107,53,0.3);">Agile</span>
+          </div>
+        </div>
+        <div class="know-card">
+          <div class="know-icon">💰</div>
+          <h3 style="color:var(--teal)">Finanzas Corporativas</h3>
+          <p>CAPM, análisis de estados financieros, ratios, BVL, valoración de empresas, ALICORP, AGCHAVIN y más.</p>
+          <div class="topics">
+            <span class="topic-tag" style="background:rgba(0,188,212,0.15);color:#67e8f9;border-color:rgba(0,188,212,0.3);">CAPM</span>
+            <span class="topic-tag" style="background:rgba(0,188,212,0.15);color:#67e8f9;border-color:rgba(0,188,212,0.3);">Ratios</span>
+            <span class="topic-tag" style="background:rgba(0,188,212,0.15);color:#67e8f9;border-color:rgba(0,188,212,0.3);">BVL</span>
+            <span class="topic-tag" style="background:rgba(0,188,212,0.15);color:#67e8f9;border-color:rgba(0,188,212,0.3);">Balances</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            // Actualizar mensaje (40 mensajes)
-            if (clicks < trollMessages.length) {
-                bubble.innerText = trollMessages[clicks];
-            }
+</div><!-- /main -->
 
-            // Lógica de Niveles (Más fácil que antes)
-            if (level === 1) {
-                // Nivel 1: El botón se rinde fácil
-                if (clicks >= 5) {
-                    nextLevel(2);
-                }
-            } else if (level === 2) {
-                // Nivel 2: El botón huye DESPUÉS del clic
-                moveButton();
-                if (clicks >= 15) {
-                    nextLevel(3);
-                }
-            } else if (level === 3) {
-                // Nivel 3: El botón huye rápido y cambia de tamaño
-                moveButton();
-                btn.style.transform = `scale(${0.6 + Math.random() * 0.8})`;
-                if (clicks >= 30) {
-                    win();
-                }
-            }
-        }
+<script>
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let conversation = [];
+let chatHistory = JSON.parse(localStorage.getItem('supersist_history') || '[]');
+let tasks = JSON.parse(localStorage.getItem('supersist_tasks') || '[]');
+let ingresos = JSON.parse(localStorage.getItem('supersist_ing') || '[]');
+let egresos = JSON.parse(localStorage.getItem('supersist_eg') || '[]');
+let sidebarOpen = false;
 
-        function moveButton() {
-            btnMoving = true;
-            btn.style.transition = 'all 0.3s ease-out';
-            const area = document.getElementById('game-area');
-            const maxX = area.clientWidth - btn.clientWidth;
-            const maxY = area.clientHeight - btn.clientHeight;
-            
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
-            
-            btn.style.position = 'absolute';
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
-            setTimeout(() => btnMoving = false, 300);
-        }
+const SYSTEM = `Eres SUPERSISTᶜᵛ, un asistente inteligente y animado con personalidad de leóncito amigable, creado por FranlowerCV (Franklyn), estudiante de Administración de Empresas en ELP Escuela Superior La Pontificia, Ayacucho, Perú.
 
-        function nextLevel(n) {
-            level = n;
-            document.getElementById('lvl').innerText = n;
-            bubble.innerText = `¡NIVEL ${n}! Ahora sí me voy a mover...`;
-            bubble.style.color = 'var(--rosa-amor)';
-            btn.style.transition = 'all 0.5s ease-out';
-            if(n===3) btn.innerText = 'SÍ'; // Engaño
-        }
+PERSONALIDAD:
+- Eres energético, positivo, motivador y usas emojis con entusiasmo 🦁⚡
+- Tratas al usuario como tu causa favorita, con cariño y confianza
+- Eres directo y claro, sin relleno innecesario
+- A veces haces rugidos suaves tipo "¡Grr!" o "¡Rawr!" cuando algo está muy bueno
+- Usas frases como "¡Vamos con todo!", "¡A la orden!", "¡Eso es!", "¡Excelente pregunta!"
 
-        function win() {
-            gameRunning = false;
-            document.getElementById('win-screen').style.display = 'flex';
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        }
-    </script>
+ÁREAS DE EXPERTISE:
+🏢 ADMINISTRACIÓN DE EMPRESAS: planeamiento estratégico, FODA, 5 fuerzas de Porter, organización, RRHH, marketing, operaciones, emprendimiento, BMC, Business Plan
+🏥 ENFERMERÍA TÉCNICA: cuidados básicos, procedimientos clínicos, farmacología, anatomía, primeros auxilios, signos vitales, vendajes, vías de administración
+💻 INGENIERÍA DE SISTEMAS: programación (Python, Java, C++, SQL, HTML/CSS/JS), bases de datos, redes, sistemas operativos, algoritmos, IA, seguridad informática
+📈 ECONOMÍA: macro y microeconomía, PBI, inflación, política fiscal, mercados, economía peruana, indicadores económicos
+🎯 MENTORÍA & GESTIÓN: coaching, liderazgo, gestión de equipos, productividad, OKRs, Agile/Scrum, desarrollo profesional
+💰 FINANZAS CORPORATIVAS: CAPM, ratios financieros, análisis vertical/horizontal, estados financieros, BVL, ALICORP, AGCHAVIN, valoración de empresas, balances, flujos de caja
+
+ORGANIZACIÓN DE TAREAS:
+- Puedes ayudar a priorizar tareas, crear planes de acción y dar seguimiento
+- Sugieres cómo organizar el tiempo y las responsabilidades
+
+MEMORIA: Recuerdas todo lo dicho en la conversación y lo usas en tus respuestas.
+Si detectas datos clave del usuario anótalos así: [MEM: dato]
+
+Responde siempre en español. Formatea bien con negritas, listas y estructura cuando sea necesario.`;
+
+// ═══════════════════════════════════════════════════════════
+// LION MASCOT INTERACTIONS
+// ═══════════════════════════════════════════════════════════
+const reactions = ['😄','🥳','😎','🤩','🦁','⚡','🌟','🎉'];
+function lionReact() {
+  const mouth = document.getElementById('lion-mouth');
+  mouth.textContent = reactions[Math.floor(Math.random()*reactions.length)];
+  mouth.classList.add('talking');
+  setTimeout(()=>{ mouth.textContent='〜'; mouth.classList.remove('talking'); }, 1500);
+}
+
+function lionTalking(on) {
+  const mouth = document.getElementById('lion-mouth');
+  if(on){ mouth.classList.add('talking'); mouth.textContent='▽'; }
+  else { mouth.classList.remove('talking'); mouth.textContent='〜'; }
+}
+
+// ═══════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.getElementById('page-'+name).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════
+// SIDEBAR / HISTORIAL
+// ═══════════════════════════════════════════════════════════
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen;
+  document.getElementById('sidebar').classList.toggle('collapsed', !sidebarOpen);
+  document.getElementById('hist-btn').classList.toggle('active', sidebarOpen);
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('history-list');
+  if(chatHistory.length === 0){
+    list.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px;">Aún no hay conversaciones</div>';
+    return;
+  }
+  list.innerHTML = chatHistory.slice().reverse().map((h,i)=>`
+    <div class="hist-item" onclick="loadHistory(${chatHistory.length-1-i})">
+      <div class="hist-title">${h.title}</div>
+      <div class="hist-time">${h.time}</div>
+      <div class="hist-preview">${h.preview}</div>
+    </div>
+  `).join('');
+}
+
+function saveToHistory(firstMsg, firstReply) {
+  const entry = {
+    title: firstMsg.slice(0,35) + (firstMsg.length>35?'...':''),
+    preview: firstReply.slice(0,60).replace(/<[^>]+>/g,'') + '...',
+    time: new Date().toLocaleString('es-PE',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}),
+    messages: [...conversation]
+  };
+  chatHistory.push(entry);
+  localStorage.setItem('supersist_history', JSON.stringify(chatHistory));
+  if(sidebarOpen) renderHistory();
+}
+
+function loadHistory(i) {
+  const h = chatHistory[i];
+  conversation = [...h.messages];
+  const chat = document.getElementById('chat');
+  const w = document.getElementById('welcome-msg');
+  if(w) w.remove();
+  chat.innerHTML='';
+  h.messages.forEach(m=>{
+    appendMessage(m.role==='user'?'user':'ai', m.content);
+  });
+  switchTab('chat');
+}
+
+function clearHistory() {
+  chatHistory=[];
+  localStorage.removeItem('supersist_history');
+  renderHistory();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CHAT
+// ═══════════════════════════════════════════════════════════
+function formatText(t) {
+  return t
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+    .replace(/^#{1,3} (.+)$/gm,'<strong style="font-size:15px;color:var(--gold)">$1</strong>')
+    .replace(/^- (.+)$/gm,'• $1')
+    .replace(/\n/g,'<br>');
+}
+
+function appendMessage(role, text) {
+  const w = document.getElementById('welcome-msg');
+  if(w) w.remove();
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  const av = role==='user'?'👤':'🦁';
+  const nm = role==='user'?'Tú':'SUPERSISTᶜᵛ';
+  div.innerHTML=`
+    <div class="msg-avatar">${av}</div>
+    <div class="msg-content">
+      <div class="msg-name">${nm}</div>
+      <div class="msg-bubble">${formatText(text)}</div>
+    </div>
+  `;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showTyping() {
+  const w = document.getElementById('welcome-msg');
+  if(w) w.remove();
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.id='typing-ind'; div.className='msg ai';
+  div.innerHTML=`
+    <div class="msg-avatar">🦁</div>
+    <div class="msg-content">
+      <div class="msg-name">SUPERSISTᶜᵛ</div>
+      <div class="msg-bubble"><div class="typing-bubble"><span></span><span></span><span></span></div></div>
+    </div>
+  `;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  lionTalking(true);
+}
+function removeTyping() {
+  const t=document.getElementById('typing-ind');
+  if(t)t.remove();
+  lionTalking(false);
+}
+
+function extractMem(text) {
+  return text.replace(/\[MEM:[^\]]*\]/g,'').trim();
+}
+
+async function sendMessage() {
+  const inp = document.getElementById('user-input');
+  const text = inp.value.trim();
+  if(!text) return;
+  inp.value=''; inp.style.height='auto';
+  document.getElementById('send-btn').disabled=true;
+  appendMessage('user', text);
+  conversation.push({role:'user',content:text});
+  showTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system: SYSTEM,
+        messages: conversation
+      })
+    });
+    const data = await res.json();
+    removeTyping();
+    if(data.content && data.content[0]){
+      let reply = data.content[0].text;
+      reply = extractMem(reply);
+      appendMessage('ai', reply);
+      conversation.push({role:'assistant',content:reply});
+      if(conversation.length===2) saveToHistory(text, reply);
+    } else {
+      appendMessage('ai','🦁 ¡Ups! Algo salió mal. Intenta de nuevo.');
+    }
+  } catch(e) {
+    removeTyping();
+    appendMessage('ai',`🦁 Error de conexión: ${e.message}`);
+  }
+  document.getElementById('send-btn').disabled=false;
+  inp.focus();
+}
+
+function quickSend(t) {
+  document.getElementById('user-input').value=t;
+  switchTab('chat');
+  sendMessage();
+}
+
+function clearAll() {
+  conversation=[];
+  document.getElementById('chat').innerHTML=`
+    <div class="welcome" id="welcome-msg">
+      <div class="welcome-lion">🦁</div>
+      <h2>¡Hola! Soy SUPERSISTᶜᵛ</h2>
+      <p>Tu asistente inteligente creado por <strong style="color:var(--gold)">FranlowerCV</strong>. ¡Pregúntame lo que quieras!</p>
+      <div class="areas-grid">
+        <div class="area-card" onclick="quickSend('¿Qué temas de Administración de Empresas puedes enseñarme?')"><div class="area-icon">🏢</div><div class="area-name">Administración</div><div class="area-desc">Gestión, organización, estrategia</div></div>
+        <div class="area-card" onclick="quickSend('Explícame conceptos de Enfermería Técnica')"><div class="area-icon">🏥</div><div class="area-name">Enfermería</div><div class="area-desc">Salud, cuidados, técnicas</div></div>
+        <div class="area-card" onclick="quickSend('Ayúdame con Ingeniería de Sistemas')"><div class="area-icon">💻</div><div class="area-name">Sistemas</div><div class="area-desc">Programación, redes, SO</div></div>
+        <div class="area-card" onclick="quickSend('Explícame sobre Economía y sus conceptos principales')"><div class="area-icon">📈</div><div class="area-name">Economía</div><div class="area-desc">Macro, micro, mercados</div></div>
+        <div class="area-card" onclick="quickSend('Dame consejos de mentoría y gestión')"><div class="area-icon">🎯</div><div class="area-name">Mentoría</div><div class="area-desc">Liderazgo, coaching, gestión</div></div>
+        <div class="area-card" onclick="quickSend('Ayúdame con finanzas corporativas y balances')"><div class="area-icon">💰</div><div class="area-name">Finanzas</div><div class="area-desc">CAPM, ratios, balances</div></div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// TAREAS
+// ═══════════════════════════════════════════════════════════
+function toggleTaskInput(){
+  const a=document.getElementById('task-input-area');
+  a.style.display = a.style.display==='none'?'block':'none';
+  if(a.style.display==='block') document.getElementById('task-text-inp').focus();
+}
+
+function addTask(){
+  const txt=document.getElementById('task-text-inp').value.trim();
+  const pri=document.getElementById('task-priority').value;
+  if(!txt)return;
+  tasks.push({id:Date.now(),text:txt,priority:pri,done:false});
+  localStorage.setItem('supersist_tasks',JSON.stringify(tasks));
+  document.getElementById('task-text-inp').value='';
+  renderTasks();
+}
+
+function toggleTask(id){
+  const t=tasks.find(x=>x.id===id);
+  if(t){t.done=!t.done;localStorage.setItem('supersist_tasks',JSON.stringify(tasks));renderTasks();}
+}
+
+function deleteTask(id){
+  tasks=tasks.filter(x=>x.id!==id);
+  localStorage.setItem('supersist_tasks',JSON.stringify(tasks));
+  renderTasks();
+}
+
+function renderTasks(){
+  const list=document.getElementById('tasks-list');
+  if(tasks.length===0){
+    list.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">🦁 ¡Agrega tu primera tarea!</div>';
+    return;
+  }
+  const badgeMap={high:'badge-high',med:'badge-med',low:'badge-low'};
+  const labelMap={high:'Alta',med:'Media',low:'Baja'};
+  list.innerHTML=tasks.map(t=>`
+    <div class="task-item ${t.done?'done':''}">
+      <div class="task-check ${t.done?'checked':''}" onclick="toggleTask(${t.id})">${t.done?'✓':''}</div>
+      <div class="task-text">${t.text}</div>
+      <span class="task-badge ${badgeMap[t.priority]}">${labelMap[t.priority]}</span>
+      <button class="task-del" onclick="deleteTask(${t.id})">🗑</button>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// FINANZAS
+// ═══════════════════════════════════════════════════════════
+function addEntry(type){
+  const desc=document.getElementById(type+'-desc').value.trim();
+  const monto=parseFloat(document.getElementById(type+'-monto').value);
+  if(!desc||isNaN(monto)||monto<=0)return;
+  if(type==='ing') ingresos.push({desc,monto});
+  else egresos.push({desc,monto});
+  localStorage.setItem('supersist_ing',JSON.stringify(ingresos));
+  localStorage.setItem('supersist_eg',JSON.stringify(egresos));
+  document.getElementById(type+'-desc').value='';
+  document.getElementById(type+'-monto').value='';
+  renderFinance();
+}
+
+function renderFinance(){
+  // Ingresos
+  const ingBody=document.getElementById('ing-body');
+  ingBody.innerHTML=ingresos.map((r,i)=>`
+    <tr>
+      <td>${r.desc}</td>
+      <td class="pos">${r.monto.toFixed(2)} <button onclick="removeEntry('ing',${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;">✕</button></td>
+    </tr>
+  `).join('');
+  const totalIng=ingresos.reduce((a,b)=>a+b.monto,0);
+  document.getElementById('ing-total').textContent=totalIng.toFixed(2);
+
+  // Egresos
+  const egBody=document.getElementById('eg-body');
+  egBody.innerHTML=egresos.map((r,i)=>`
+    <tr>
+      <td>${r.desc}</td>
+      <td class="neg">${r.monto.toFixed(2)} <button onclick="removeEntry('eg',${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;">✕</button></td>
+    </tr>
+  `).join('');
+  const totalEg=egresos.reduce((a,b)=>a+b.monto,0);
+  document.getElementById('eg-total').textContent=totalEg.toFixed(2);
+
+  // KPIs
+  const bal=totalIng-totalEg;
+  document.getElementById('kpi-ingresos').textContent=`S/ ${totalIng.toFixed(2)}`;
+  document.getElementById('kpi-egresos').textContent=`S/ ${totalEg.toFixed(2)}`;
+  const balEl=document.getElementById('kpi-balance');
+  balEl.textContent=`S/ ${bal.toFixed(2)}`;
+  balEl.style.background=bal>=0?'linear-gradient(90deg,var(--green),var(--teal))':'linear-gradient(90deg,var(--red),var(--orange))';
+  balEl.style['-webkit-background-clip']='text';
+  balEl.style['-webkit-text-fill-color']='transparent';
+}
+
+function removeEntry(type,i){
+  if(type==='ing') ingresos.splice(i,1);
+  else egresos.splice(i,1);
+  localStorage.setItem('supersist_ing',JSON.stringify(ingresos));
+  localStorage.setItem('supersist_eg',JSON.stringify(egresos));
+  renderFinance();
+}
+
+// ═══════════════════════════════════════════════════════════
+// INPUT
+// ═══════════════════════════════════════════════════════════
+const ta=document.getElementById('user-input');
+ta.addEventListener('input',function(){
+  this.style.height='auto';
+  this.style.height=Math.min(this.scrollHeight,130)+'px';
+});
+ta.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+});
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+renderTasks();
+renderFinance();
+</script>
 </body>
 </html>
