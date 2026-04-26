@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SUPERSISTᶜᵛ | THE CHALLENGE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul-player: #002D5A;
+            --rojo-enemigo: #ff0000;
+            --meta-verde: #2ecc71;
+            --fondo: #b5b5ff; /* Color clásico del juego */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+        }
+
+        #game-container {
+            position: relative;
+            width: 350px;
+            height: 200px;
+            background: var(--fondo);
+            border: 4px solid #000;
+            overflow: hidden;
+        }
+
+        /* Zonas seguras */
+        .zone {
+            position: absolute;
+            width: 50px;
+            height: 100%;
+            background: #ccffcc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #000;
+            font-weight: bold;
+        }
+        .start { left: 0; border-right: 2px solid #000; }
+        .end { right: 0; background: var(--meta-verde); border-left: 2px solid #000; }
+
+        /* Jugador y Enemigos */
+        #player {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--azul-player);
+            border: 2px solid #000;
+            left: 15px;
+            top: 90px;
+            z-index: 10;
+        }
+
+        .enemy {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--rojo-enemigo);
+            border: 1px solid #000;
+            border-radius: 50%;
+        }
+
+        /* Controles y Texto */
+        .ui { text-align: center; margin-bottom: 15px; }
+        .controls {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 10px;
+        }
+        .btn-ctrl {
+            background: #444;
+            color: white;
+            border: 2px solid #fff;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .btn-ctrl:active { background: var(--naranja-vivido); }
+    </style>
+</head>
+<body>
+
+    <div class="ui">
+        <h2 style="color: #FFD700;">SUPERSISTᶜᵛ CHALLENGE</h2>
+        <p id="death-count">MUERTES: 0</p>
+        <p style="font-size: 10px; margin-top: 5px;">LLEGA A LA ZONA VERDE PARA ENTRAR</p>
+    </div>
+
+    <div id="game-container">
+        <div class="zone start">INICIO</div>
+        <div class="zone end">META</div>
+        <div id="player"></div>
+        </div>
+
+    <div class="controls">
+        <div></div>
+        <button class="btn-ctrl" onclick="move('up')">↑</button>
+        <div></div>
+        <button class="btn-ctrl" onclick="move('left')">←</button>
+        <button class="btn-ctrl" onclick="move('down')">↓</button>
+        <button class="btn-ctrl" onclick="move('right')">→</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        const player = document.getElementById('player');
+        const container = document.getElementById('game-container');
+        let posX = 15;
+        let posY = 90;
+        let deaths = 0;
+
+        // Crear enemigos móviles
+        const enemies = [
+            { x: 80, y: 0, dir: 1, speed: 4 },
+            { x: 140, y: 180, dir: -1, speed: 5 },
+            { x: 200, y: 0, dir: 1, speed: 6 },
+            { x: 260, y: 180, dir: -1, speed: 4 }
+        ];
+
+        const enemyElements = enemies.map((en, i) => {
+            const el = document.createElement('div');
+            el.className = 'enemy';
+            container.appendChild(el);
+            return el;
+        });
+
+        function update() {
+            // Mover enemigos
+            enemies.forEach((en, i) => {
+                en.y += en.dir * en.speed;
+                if (en.y > 185 || en.y < 0) en.dir *= -1;
+                enemyElements[i].style.left = en.x + 'px';
+                enemyElements[i].style.top = en.y + 'px';
+
+                // Colisión simple
+                if (Math.abs(posX - en.x) < 15 && Math.abs(posY - en.y) < 15) {
+                    resetPlayer();
+                }
+            });
+
+            // Ganar
+            if (posX > 310) {
+                win();
+            }
+            requestAnimationFrame(update);
+        }
+
+        function move(dir) {
+            const step = 15;
+            if (dir === 'up' && posY > 5) posY -= step;
+            if (dir === 'down' && posY < 175) posY += step;
+            if (dir === 'left' && posX > 5) posX -= step;
+            if (dir === 'right' && posX < 330) posX += step;
+            
+            player.style.left = posX + 'px';
+            player.style.top = posY + 'px';
+        }
+
+        function resetPlayer() {
+            deaths++;
+            document.getElementById('death-count').innerText = "MUERTES: " + deaths;
+            posX = 15;
+            posY = 90;
+            player.style.left = posX + 'px';
+            player.style.top = posY + 'px';
+        }
+
+        function win() {
+            confetti({ particleCount: 150, colors: ['#FF6600', '#2ecc71'] });
+            posX = -100; // Sacar al jugador para que no siga detectando meta
+            alert("¡PERSISTENCIA COMPROBADA! Bienvenido, León.");
+            window.location.href = 'home.html';
+        }
+
+        update();
+    </script>
+</body>
+</html>
