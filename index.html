@@ -3,266 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GIVE UP? - JHANNY EDITION</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <title>¡NO LO TOQUES!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
-        body { 
-            background: #1a1a1a; 
-            font-family: 'Bungee', cursive; 
-            overflow: hidden; 
-            color: white; 
-            display: flex; justify-content: center; align-items: center; height: 100vh;
-        }
-        #game-container {
-            position: relative;
-            width: 100vw; max-width: 600px;
-            height: 80vh; max-height: 400px;
-            background: #222;
-            border: 4px solid #444;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-        }
-        canvas { width: 100%; height: 100%; image-rendering: pixelated; }
-        
-        /* UI */
-        #ui {
-            position: absolute; top: 10px; width: 100%;
-            display: flex; justify-content: space-between; padding: 0 20px;
-            pointer-events: none; z-index: 10; font-size: 12px;
-        }
-        #narrator {
-            position: absolute; top: 50px; width: 100%;
-            text-align: center; color: #ff003c; font-size: 14px;
-            text-shadow: 2px 2px 0px black; z-index: 10;
+        :root { --red: #ff003c; --bg: #121212; }
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; user-select: none; }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Bungee', cursive;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; overflow: hidden; color: white;
         }
 
-        /* Controles */
-        #controls {
-            position: fixed; bottom: 20px; width: 100%;
-            display: flex; justify-content: space-around; padding: 0 20px;
+        /* El Escenario */
+        #game-area {
+            position: relative; width: 100vw; height: 70vh;
+            display: flex; align-items: center; justify-content: center;
         }
-        .btn-ctrl {
-            width: 70px; height: 70px; background: rgba(255,255,255,0.1);
-            border: 3px solid white; border-radius: 10px;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 30px; color: white;
-        }
-        .btn-ctrl:active { background: white; color: black; }
 
-        /* Overlay Final */
-        #final-screen {
-            position: absolute; inset: 0; background: rgba(255, 77, 109, 0.95);
+        /* El Botón de Fernanfloo Style */
+        #the-button {
+            width: 150px; height: 150px; background: var(--red);
+            border-radius: 50%; border: 8px solid #80001d;
+            box-shadow: 0 10px 0 #80001d, 0 0 50px rgba(255, 0, 60, 0.5);
+            cursor: pointer; position: relative; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 50px; transition: transform 0.1s, top 0.2s, left 0.2s;
+        }
+        #the-button:active { transform: translateY(10px) scale(0.95); box-shadow: 0 0 0 #80001d; }
+
+        /* Mensajes Troll */
+        #msg-bubble {
+            position: absolute; top: 10%; width: 80%;
+            background: white; color: black; padding: 15px;
+            border-radius: 15px; font-family: 'Press Start 2P', cursive;
+            font-size: 12px; text-align: center; line-height: 1.6;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            animation: float 2s infinite ease-in-out;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* Efectos Especiales */
+        .shake { animation: shakeBtn 0.2s infinite; }
+        @keyframes shakeBtn { 0% { transform: translate(2px, 2px); } 50% { transform: translate(-2px, -2px); } }
+
+        .glitch { background: #00f5d4 !important; border-color: #00bfa5 !important; }
+
+        /* Pantalla Final */
+        #win-screen {
+            position: fixed; inset: 0; background: #39ff14;
             display: none; flex-direction: column; align-items: center;
-            justify-content: center; z-index: 100; text-align: center;
+            justify-content: center; z-index: 100; text-align: center; color: black;
         }
     </style>
 </head>
 <body>
 
-    <div id="game-container">
-        <div id="ui">
-            <div>MUERTES: <span id="deaths">0</span></div>
-            <div>NIVEL: <span id="lvl-display">1/4</span></div>
-        </div>
-        <div id="narrator">¿POR QUÉ SIGUES INTENTANDO?</div>
-        <canvas id="gameCanvas"></canvas>
-        
-        <div id="final-screen">
-            <h1 style="font-size: 40px;">¡BOOYAH!</h1>
-            <p style="margin: 20px; font-family: 'Montserrat';">No te rendiste y por fin atrapaste mi "SÍ".</p>
-            <div style="font-size: 60px;">🦁💖👸🏻</div>
-            <button onclick="location.reload()" style="padding: 10px 20px; margin-top: 20px; font-family: 'Bungee';">REPETIR</button>
-        </div>
+    <div id="msg-bubble">NO TOQUES EL BOTÓN ROJO. ADVERTIDA ESTÁS.</div>
+
+    <div id="game-area">
+        <div id="the-button" onclick="handlePress()">🦁</div>
     </div>
 
-    <div id="controls">
-        <div style="display: flex; gap: 10px;">
-            <div class="btn-ctrl" onpointerdown="keys.left=true" onpointerup="keys.left=false">←</div>
-            <div class="btn-ctrl" onpointerdown="keys.right=true" onpointerup="keys.right=false">→</div>
-        </div>
-        <div class="btn-ctrl" style="background: #ff4d6d;" onpointerdown="jump()">↑</div>
+    <div id="win-screen">
+        <h1 style="font-size: 50px;">¡TE RINDES!</h1>
+        <p style="margin: 20px;">Después de tanto trolleo, admito que me quieres.</p>
+        <div style="font-size: 80px;">🦁❤️👸🏻</div>
+        <button onclick="location.reload()" style="padding:10px 20px; font-family:'Bungee';">VOLVER A EMPEZAR</button>
     </div>
 
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 600; canvas.height = 400;
+        const btn = document.getElementById('the-button');
+        const bubble = document.getElementById('msg-bubble');
+        let clicks = 0;
 
-        let deaths = 0;
-        let currentLevel = 1;
-        const keys = { left: false, right: false };
-        
-        // Entidades
-        let player = { x: 50, y: 300, w: 20, h: 20, vx: 0, vy: 0, grounded: false };
-        let exit = { x: 530, y: 300, w: 40, h: 60 };
-        let spikes = [];
-        let platforms = [];
-
-        const phrases = [
-            "Es demasiado difícil para ti...",
-            "Mejor ve a dormir, Jhanny.",
-            "Ese botón de SÍ es inalcanzable.",
-            "¡Cuidado con los pinchos!",
-            "¿Otra muerte más? Qué mal...",
-            "¡Ríndete ya!",
-            "Casi... pero NO."
+        const trollMessages = [
+            "Te dije que no lo tocaras...", "Jajaja, ¡qué terca eres!", "A ver, ¿otra vez?", 
+            "¿Eres Jhanny o una niña pequeña?", "¡Oye! Eso dolió.", "Mi abuela es más obediente.",
+            "Si lo tocas otra vez, explota.", "3... 2... 1... ¡Mentira! 😂", "Instalando virus de amor...",
+            "Error: Usuario demasiado curioso.", "¡BUM! ... Casi.", "¿Ya te cansaste?",
+            "El León se está enojando...", "¡Trolleadísima!", "Deja de picarme.",
+            "Si sigues, llamo a la policía.", "¿No tienes nada mejor que hacer?", "¡Ups! Casi se me sale el SÍ.",
+            "¡No me toques ahí!", "Cada clic es un beso que me debes.", "¡Vaya fail de Jhanny!",
+            "Esa mano, ¡quieta!", "¡Me voy a otro lado!", "¡Ja! Te gané en velocidad.",
+            "¿Estás llorando ya?", "¡Ríndete, por favor!", "No hay nada al final, en serio.",
+            "¡Me muero de la risa!", "¡Esa puntería es de nivel 1!", "¡Mira un pajarito! 🐦",
+            "Sigue intentando, exploradora.", "¿Ya terminaste?", "¡Qué pesada!",
+            "El botón de SÍ se acaba de ir de viaje.", "No sirves para esto.", "¡Atrapado!",
+            "Jajaja, ¡otra vez fallaste!", "¡Qué risa me das!", "Me estoy quedando sin frases.",
+            "¿Te ríndes? Presiona una vez más..."
         ];
 
-        function loadLevel(l) {
-            platforms = [
-                { x: 0, y: 360, w: 600, h: 40 }, // Suelo
-                { x: 0, y: 0, w: 20, h: 400 },   // Pared izq
-                { x: 580, y: 0, w: 20, h: 400 }  // Pared der
-            ];
-            spikes = [];
-            player.x = 50; player.y = 300; player.vx = 0; player.vy = 0;
-            document.getElementById('lvl-display').innerText = `${l}/4`;
-            document.getElementById('narrator').innerText = phrases[Math.floor(Math.random()*phrases.length)];
-
-            if (l >= 1) { // Nivel 1: El inicio
-                platforms.push({ x: 250, y: 280, w: 100, h: 20 });
-            }
-            if (l >= 2) { // Nivel 2: Pinchos básicos
-                spikes.push({ x: 200, y: 340, w: 200, h: 20 });
-            }
-            if (l >= 3) { // Nivel 3: El salto de fe
-                platforms.push({ x: 150, y: 220, w: 80, h: 20 });
-                platforms.push({ x: 350, y: 150, w: 80, h: 20 });
-                spikes.push({ x: 0, y: 340, w: 580, h: 20 }); // Suelo mortal
-            }
-            if (l >= 4) { // Nivel 4: Final Boss (El SÍ se mueve)
-                platforms.push({ x: 100, y: 300, w: 50, h: 10 });
-                platforms.push({ x: 200, y: 240, w: 50, h: 10 });
-                platforms.push({ x: 300, y: 180, w: 50, h: 10 });
-                platforms.push({ x: 400, y: 120, w: 50, h: 10 });
-                spikes.push({ x: 0, y: 340, w: 600, h: 20 });
-            }
-        }
-
-        function jump() {
-            if (player.grounded) {
-                player.vy = -10;
-                player.grounded = false;
-            }
-        }
-
-        function update() {
-            // Gravedad y fricción
-            player.vy += 0.5; 
-            if(keys.left) player.vx = -4;
-            else if(keys.right) player.vx = 4;
-            else player.vx *= 0.8;
-
-            player.x += player.vx;
-            player.y += player.vy;
-
-            player.grounded = false;
-
-            // Colisiones Plataformas
-            platforms.forEach(p => {
-                if (player.x < p.x + p.w && player.x + player.w > p.x &&
-                    player.y < p.y + p.h && player.y + player.h > p.y) {
-                    
-                    // Colisión por arriba
-                    if (player.vy > 0 && player.y + player.h - player.vy <= p.y) {
-                        player.y = p.y - player.h;
-                        player.vy = 0;
-                        player.grounded = true;
-                    }
-                    // Colisión por abajo
-                    else if (player.vy < 0 && player.y - player.vy >= p.y + p.h) {
-                        player.y = p.y + p.h;
-                        player.vy = 0;
-                    }
-                    // Laterales
-                    else {
-                        player.x -= player.vx;
-                        player.vx = 0;
-                    }
-                }
-            });
-
-            // Colisión Pinchos
-            spikes.forEach(s => {
-                if (player.x < s.x + s.w && player.x + player.w > s.x &&
-                    player.y < s.y + s.h && player.y + player.h > s.y) {
-                    die();
-                }
-            });
-
-            // Colisión Salida (Botón SÍ)
-            if (player.x < exit.x + exit.w && player.x + player.w > exit.x &&
-                player.y < exit.y + exit.h && player.y + player.h > exit.y) {
-                nextLevel();
-            }
-
-            // Nivel 4: Salida se mueve
-            if(currentLevel === 4) {
-                exit.y = 80;
-                exit.x = 410;
-            }
-        }
-
-        function die() {
-            deaths++;
-            document.getElementById('deaths').innerText = deaths;
-            loadLevel(currentLevel);
-        }
-
-        function nextLevel() {
-            currentLevel++;
-            if (currentLevel > 4) {
-                document.getElementById('final-screen').style.display = 'flex';
+        function handlePress() {
+            clicks++;
+            
+            // 1. Cambiar el mensaje (40 mensajes)
+            if (clicks < trollMessages.length) {
+                bubble.innerText = trollMessages[clicks];
             } else {
-                loadLevel(currentLevel);
+                document.getElementById('win-screen').style.display = 'flex';
+            }
+
+            // 2. Comportamiento del botón según el nivel de "enojo"
+            if (clicks > 5) {
+                // El botón empieza a saltar
+                moveButton();
+            }
+
+            if (clicks > 15) {
+                // El botón se vuelve loco (glitch)
+                btn.classList.add('glitch');
+                setTimeout(() => btn.classList.remove('glitch'), 150);
+            }
+
+            if (clicks > 25) {
+                // El botón se hace pequeño
+                btn.style.transform = 'scale(0.5)';
+            }
+
+            if (clicks === 35) {
+                // Sacudida de pantalla
+                document.body.style.backgroundColor = 'white';
+                setTimeout(() => document.body.style.backgroundColor = '#121212', 100);
             }
         }
 
-        function draw() {
-            ctx.fillStyle = "#222";
-            ctx.fillRect(0,0,canvas.width, canvas.height);
-
-            // Dibujar Plataformas
-            ctx.fillStyle = "#444";
-            platforms.forEach(p => ctx.fillRect(p.x, p.y, p.w, p.h));
-
-            // Dibujar Pinchos
-            ctx.fillStyle = "#ff003c";
-            spikes.forEach(s => {
-                for(let i=0; i<s.w; i+=20) {
-                    ctx.beginPath();
-                    ctx.moveTo(s.x + i, s.y + s.h);
-                    ctx.lineTo(s.x + i + 10, s.y);
-                    ctx.lineTo(s.x + i + 20, s.y + s.h);
-                    ctx.fill();
-                }
-            });
-
-            // Dibujar Botón SÍ (La Salida)
-            ctx.fillStyle = "#39ff14";
-            ctx.fillRect(exit.x, exit.y, exit.w, exit.h);
-            ctx.fillStyle = "black";
-            ctx.font = "12px Bungee";
-            ctx.fillText("SÍ", exit.x + 10, exit.y + 35);
-
-            // Dibujar Player (Jhanny)
-            ctx.fillStyle = "#ff4d6d";
-            ctx.fillRect(player.x, player.y, player.w, player.h);
-            ctx.fillStyle = "white";
-            ctx.font = "14px Arial";
-            ctx.fillText("👸🏻", player.x - 2, player.y + 15);
+        function moveButton() {
+            const area = document.getElementById('game-area');
+            const maxX = area.clientWidth - btn.clientWidth;
+            const maxY = area.clientHeight - btn.clientHeight;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            btn.style.position = 'absolute';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
         }
-
-        function loop() {
-            update();
-            draw();
-            requestAnimationFrame(loop);
-        }
-
-        loadLevel(1);
-        loop();
     </script>
 </body>
 </html>
- 
