@@ -3,287 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PARA MI JHANNY ❤️</title>
+    <title>VIRTUAL BOYFRIEND | PARA JHANNY</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --rosa-fuerte: #ff4d6d;
-            --rosa-claro: #ffb3c1;
-            --fondo: #fff0f3;
-            --oro: #ffb703;
+            --romance-pink: #ff4d6d;
+            --soft-pink: #fff0f3;
+            --gold: #ffb703;
+            --dark-pink: #590d22;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: var(--fondo);
+            background: var(--soft-pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: var(--dark-pink);
+        }
+
+        #game-card {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        /* Cabecera */
+        #header {
+            background: var(--romance-pink);
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        #love-bar-container {
+            width: 80%;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            margin: 10px auto;
+        }
+
+        #love-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--gold);
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+
+        /* Avatar y Diálogo */
+        #visual-area {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            color: #590d22;
-            overflow: hidden;
+            padding: 20px;
+            text-align: center;
         }
 
-        /* Pantalla de Victoria (Corazón Gigante) */
-        #victory-screen {
+        #avatar {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        #dialogue-box {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+            min-height: 80px;
+            padding: 0 10px;
+        }
+
+        /* Opciones */
+        #options-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid var(--romance-pink);
+            padding: 15px;
+            border-radius: 15px;
+            color: var(--romance-pink);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .option-btn:active {
+            background: var(--romance-pink);
+            color: white;
+            transform: scale(0.98);
+        }
+
+        /* Pantallas Finales */
+        .screen-overlay {
+            position: absolute;
+            inset: 0;
+            background: white;
             display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 240, 243, 0.95);
-            z-index: 100;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 30px;
             text-align: center;
-            padding: 20px;
+            z-index: 100;
         }
 
         .big-heart {
-            font-size: 150px;
-            color: var(--rosa-fuerte);
-            animation: heartbeat 1.2s infinite;
+            font-size: 120px;
+            color: var(--romance-pink);
+            animation: heartbeat 1s infinite;
         }
 
         @keyframes heartbeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.3); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
-            60% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
-        #game-container {
-            position: relative;
-            width: 350px;
-            height: 300px;
-            background: white;
-            border: 4px solid var(--rosa-claro);
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.15);
+        #kiss-msg {
+            font-family: 'Dancing Script', cursive;
+            font-size: 40px;
+            color: var(--romance-pink);
+            margin-top: 20px;
         }
-
-        .zone {
-            position: absolute;
-            width: 50px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: bold;
-            z-index: 1;
-        }
-        .start { left: 0; background: #ffe5ec; border-right: 2px dashed var(--rosa-claro); }
-        .end { right: 0; background: var(--rosa-fuerte); color: white; }
-
-        #player {
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            background: var(--oro);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            z-index: 10;
-            box-shadow: 0 0 15px var(--oro);
-            transition: top 0.1s, left 0.1s;
-        }
-
-        .obstacle {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            background: #ff758f;
-            border-radius: 4px;
-            transform: rotate(45deg);
-        }
-
-        .ui { text-align: center; margin-bottom: 10px; width: 350px; }
-        #message-box {
-            min-height: 45px;
-            color: var(--rosa-fuerte);
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 10px;
-            padding: 0 15px;
-            font-style: italic;
-        }
-
-        .controls {
-            margin-top: 15px;
-            display: grid;
-            grid-template-columns: repeat(3, 75px);
-            gap: 8px;
-        }
-        .btn-ctrl {
-            background: white;
-            color: var(--rosa-fuerte);
-            border: 2px solid var(--rosa-claro);
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 22px;
-            box-shadow: 0 4px 0 var(--rosa-claro);
-        }
-        .btn-ctrl:active { transform: translateY(2px); box-shadow: none; }
     </style>
 </head>
 <body>
 
-    <div id="victory-screen">
-        <div class="big-heart">❤️</div>
-        <h1 style="font-family: 'Dancing Script'; font-size: 2.5rem; color: #ff4d6d;">¡Lo lograste, Jhanny!</h1>
-        <p style="margin-top: 20px; font-size: 1.1rem; line-height: 1.6;">
-            Eres mi mayor tesoro.<br>
-            No importa la distancia ni los obstáculos,<br>
-            <b>mi corazón siempre será tuyo.</b>
-        </p>
-        <button onclick="location.reload()" style="margin-top:30px; padding:10px 20px; border-radius:20px; border:none; background: #ff4d6d; color:white;">Jugar de nuevo</button>
-    </div>
+    <div id="game-card">
+        <div id="header">
+            <h2 style="font-size: 14px; letter-spacing: 2px;">VIRTUAL BOYFRIEND</h2>
+            <div id="love-bar-container"><div id="love-bar"></div></div>
+            <p id="lives-display">VIDAS: ❤️❤️❤️</p>
+        </div>
 
-    <div class="ui">
-        <h1 style="font-family: 'Dancing Script'; color: #ff4d6d;">Para mi Jhanny</h1>
-        <div id="lvl-txt" style="font-weight: bold; color: #ffb703;">NIVEL 1: Un comienzo dulce</div>
-        <div id="message-box">Llega a la zona roja para avanzar...</div>
-    </div>
+        <div id="visual-area">
+            <div id="avatar">🦁</div>
+            <div id="dialogue-box">¡Hola mi Jhanny! ¿Estás lista para demostrar cuánto me conoces?</div>
+        </div>
 
-    <div id="game-container">
-        <div class="zone start">SALIDA</div>
-        <div class="zone end">META</div>
-        <div id="player">⭐</div>
-    </div>
+        <div id="options-container">
+            <button class="option-btn" onclick="startGame()">¡Sí, vamos amor!</button>
+        </div>
 
-    <div class="controls">
-        <div></div>
-        <button class="btn-ctrl" onpointerdown="move('up')">↑</button>
-        <div></div>
-        <button class="btn-ctrl" onpointerdown="move('left')">←</button>
-        <button class="btn-ctrl" onpointerdown="move('down')">↓</button>
-        <button class="btn-ctrl" onpointerdown="move('right')">→</button>
+        <div id="win-screen" class="screen-overlay">
+            <div class="big-heart">💋</div>
+            <div id="kiss-msg">¡MUAAAK!</div>
+            <p style="margin-top: 20px; font-weight: bold;">¡Felicidades mi vida! Has ganado mi corazón eterno y este beso gigante.</p>
+            <button class="option-btn" style="margin-top: 30px;" onclick="location.reload()">Volver a jugar</button>
+        </div>
+
+        <div id="lose-screen" class="screen-overlay">
+            <div style="font-size: 80px;">😿</div>
+            <h2 style="margin: 20px 0;">¡Oh no, amor!</h2>
+            <p>Parece que necesitamos recordar más momentos juntos. Pero no te preocupes, ¡yo te sigo amando!</p>
+            <button class="option-btn" style="margin-top: 30px;" onclick="location.reload()">Intentar de nuevo</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        const player = document.getElementById('player');
-        const container = document.getElementById('game-container');
-        const msgBox = document.getElementById('message-box');
-        const lvlTxt = document.getElementById('lvl-txt');
-        
-        let posX = 15;
-        let posY = 135;
-        let currentLevel = 1;
-        let obstacles = [];
-        let obsElements = [];
+        let currentStep = 0;
+        let lives = 3;
+        let loveScore = 0;
 
-        const phrases = [
-            "¡Tú puedes, mi vida!", "Eres mi pensamiento favorito.", "Cada intento es un te amo.",
-            "¡Casi lo tienes, hermosa!", "Eres la dueña de mi sonrisa.", "Eres mi sol de cada día.",
-            "¡Ánimo Jhanny!", "Mi corazón late por ti.", "Eres el regalo más lindo.",
-            "¡No te rindas, amor!", "A tu lado todo es mejor.", "Eres mi persona favorita.",
-            "Eres el amor de mi vida.", "¡Eres súper capaz!", "Te quiero infinitamente.",
-            "Eres mi razón de ser.", "¡Qué bien lo haces!", "Eres pura magia.",
-            "Amo tu persistencia.", "Eres increíble, Jhanny.", "Toda mi fuerza es tuya.",
-            "¡Eres una campeona!", "Te mando un beso enorme.", "Gracias por existir.",
-            "Eres mi sueño hecho realidad.", "¡Tú puedes con todo!", "Eres mi alegría.",
-            "¡Vamos, mi reina!", "Contigo el mundo es bello.", "Eres mi motivación.",
-            "¡Esa es mi Jhanny!", "Falta poquito para el final.", "Te adoro demasiado."
+        const questions = [
+            {
+                q: "Si pudiéramos irnos de viaje mañana mismo, ¿a dónde crees que me gustaría llevarte?",
+                options: [
+                    { t: "A una playa tranquila", correct: true },
+                    { t: "A escalar una montaña", correct: false },
+                    { t: "A una ciudad ruidosa", correct: false }
+                ]
+            },
+            {
+                q: "¿Qué es lo que más me gusta de ti?",
+                options: [
+                    { t: "Tu sonrisa", correct: true },
+                    { t: "Tu forma de hablar", correct: true }, // Ambas son lindas
+                    { t: "Que eres una mandona jaja", correct: false }
+                ]
+            },
+            {
+                q: "¿Cuál es mi comida favorita cuando estoy contigo?",
+                options: [
+                    { t: "Cualquiera, si la comparto contigo", correct: true },
+                    { t: "Ensalada pura", correct: false },
+                    { t: "Comida rápida", correct: false }
+                ]
+            },
+            {
+                q: "¿Qué animal me representa más según yo?",
+                options: [
+                    { t: "Un gatito", correct: false },
+                    { t: "Un León", correct: true },
+                    { t: "Un osito", correct: false }
+                ]
+            },
+            {
+                q: "Cuando estamos lejos, ¿qué es lo primero que hago al pensar en ti?",
+                options: [
+                    { t: "Sonreír como tonto", correct: true },
+                    { t: "Dormirme", correct: false },
+                    { t: "Ponerme a trabajar", correct: false }
+                ]
+            }
         ];
 
-        function initLevel(level) {
-            obsElements.forEach(el => el.remove());
-            obstacles = [];
-            obsElements = [];
+        function startGame() {
+            renderQuestion();
+        }
 
-            if (level === 1) {
-                lvlTxt.innerText = "NIVEL 1: Un comienzo dulce";
-                for(let i=0; i<3; i++) {
-                    obstacles.push({ x: 100 + (i*60), y: i*50, dir: 1, speed: 3.5 });
-                }
-            } else if (level === 2) {
-                lvlTxt.innerText = "NIVEL 2: Pasos con cariño";
-                // Ajustado para que sea posible pasar
-                for(let i=0; i<4; i++) {
-                    obstacles.push({ x: 80 + (i*55), y: i*40, dir: 1, speed: 4.5 });
-                }
-            } else if (level === 3) {
-                lvlTxt.innerText = "NIVEL 3: El camino al corazón";
-                for(let i=0; i<6; i++) {
-                    obstacles.push({ x: 70 + (i*40), y: Math.random()*240, dir: 1, speed: 5 });
-                }
+        function renderQuestion() {
+            if (currentStep >= questions.length) {
+                winGame();
+                return;
             }
 
-            obstacles.forEach(ob => {
-                const el = document.createElement('div');
-                el.className = 'obstacle';
-                container.appendChild(el);
-                obsElements.push(el);
-            });
-        }
-
-        function update() {
-            obstacles.forEach((ob, i) => {
-                ob.y += ob.dir * ob.speed;
-                if (ob.y > 280 || ob.y < 0) ob.dir *= -1;
-                obsElements[i].style.left = ob.x + 'px';
-                obsElements[i].style.top = ob.y + 'px';
-
-                if (Math.abs(posX - ob.x) < 18 && Math.abs(posY - ob.y) < 18) {
-                    resetPosition();
-                }
-            });
-
-            if (posX > 295) nextLevel();
-            requestAnimationFrame(update);
-        }
-
-        function move(dir) {
-            const step = 22;
-            if (dir === 'up' && posY > 10) posY -= step;
-            if (dir === 'down' && posY < 265) posY += step;
-            if (dir === 'left' && posX > 10) posX -= step;
-            if (dir === 'right' && posX < 320) posX += step;
+            const data = questions[currentStep];
+            document.getElementById('dialogue-box').innerText = data.q;
+            document.getElementById('avatar').innerText = "🤔";
             
-            player.style.left = posX + 'px';
-            player.style.top = posY + 'px';
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
+
+            data.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn";
+                btn.innerText = opt.t;
+                btn.onclick = () => checkAnswer(opt.correct);
+                container.appendChild(btn);
+            });
         }
 
-        function resetPosition() {
-            msgBox.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-            posX = 15;
-            posY = 135;
-            player.style.left = posX + 'px';
-            player.style.top = posY + 'px';
-        }
-
-        function nextLevel() {
-            if (currentLevel < 3) {
-                currentLevel++;
-                posX = 15; posY = 135;
-                initLevel(currentLevel);
-                msgBox.innerText = "¡Excelente! Cada vez más cerca...";
+        function checkAnswer(isCorrect) {
+            if (isCorrect) {
+                loveScore += (100 / questions.length);
+                document.getElementById('love-bar').style.width = loveScore + "%";
+                document.getElementById('avatar').innerText = "😍";
+                currentStep++;
+                
+                // Pequeño confeti de acierto
+                confetti({ particleCount: 30, spread: 50, colors: ['#ff4d6d'] });
+                
+                setTimeout(renderQuestion, 1000);
             } else {
-                win();
+                lives--;
+                updateLives();
+                document.getElementById('avatar').innerText = "🥺";
+                if (lives <= 0) {
+                    loseGame();
+                } else {
+                    alert("¡Casi! Inténtalo de nuevo, amor.");
+                }
             }
         }
 
-        function win() {
-            document.getElementById('victory-screen').style.display = 'flex';
+        function updateLives() {
+            let heartStr = "VIDAS: ";
+            for(let i=0; i<3; i++) {
+                heartStr += (i < lives) ? "❤️" : "🖤";
+            }
+            document.getElementById('lives-display').innerText = heartStr;
+        }
+
+        function winGame() {
+            document.getElementById('win-screen').style.display = 'flex';
             confetti({
                 particleCount: 200,
-                spread: 90,
+                spread: 100,
                 origin: { y: 0.6 },
-                colors: ['#ff4d6d', '#ffb3c1', '#ffb703']
+                colors: ['#ff4d6d', '#ffb703', '#ffffff']
             });
-            posX = -1000;
+            
+            // Efecto de muchos besos
+            let interval = setInterval(() => {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff4d6d']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff4d6d']
+                });
+            }, 250);
+            
+            setTimeout(() => clearInterval(interval), 3000);
         }
 
-        initLevel(1);
-        update();
+        function loseGame() {
+            document.getElementById('lose-screen').style.display = 'flex';
+        }
     </script>
 </body>
 </html>
