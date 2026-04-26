@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JHANNY'S LOVE QUEST</title>
+    <title>PARA MI JHANNY ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --rosa-amor: #ff4d6d;
-            --rosa-suave: #ffb3c1;
-            --dorado: #ffb703;
+            --rosa-fuerte: #ff4d6d;
+            --rosa-claro: #ffb3c1;
             --fondo: #fff0f3;
+            --oro: #ffb703;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
@@ -27,101 +27,134 @@
             overflow: hidden;
         }
 
-        h1 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--rosa-amor); margin-bottom: 5px; }
+        /* Pantalla de Victoria (Corazón Gigante) */
+        #victory-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 240, 243, 0.95);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .big-heart {
+            font-size: 150px;
+            color: var(--rosa-fuerte);
+            animation: heartbeat 1.2s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.3); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
+        }
 
         #game-container {
             position: relative;
             width: 350px;
             height: 300px;
             background: white;
-            border: 5px solid var(--rosa-suave);
-            border-radius: 20px;
+            border: 4px solid var(--rosa-claro);
+            border-radius: 25px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.15);
         }
 
         .zone {
             position: absolute;
-            width: 60px;
+            width: 50px;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
             z-index: 1;
         }
-        .start { left: 0; background: #ffe5ec; border-right: 2px dashed var(--rosa-suave); }
-        .end { right: 0; background: var(--rosa-amor); color: white; text-align: center; font-size: 10px; }
+        .start { left: 0; background: #ffe5ec; border-right: 2px dashed var(--rosa-claro); }
+        .end { right: 0; background: var(--rosa-fuerte); color: white; }
 
         #player {
             position: absolute;
-            width: 24px;
-            height: 24px;
-            background: var(--dorado);
+            width: 22px;
+            height: 22px;
+            background: var(--oro);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            left: 18px;
-            top: 135px;
             z-index: 10;
-            box-shadow: 0 0 10px var(--dorado);
-            transition: transform 0.1s;
+            box-shadow: 0 0 15px var(--oro);
+            transition: top 0.1s, left 0.1s;
         }
 
         .obstacle {
             position: absolute;
-            width: 15px;
-            height: 15px;
+            width: 16px;
+            height: 16px;
             background: #ff758f;
-            border-radius: 3px;
+            border-radius: 4px;
             transform: rotate(45deg);
         }
 
-        .ui { text-align: center; margin-bottom: 15px; width: 350px; }
-        #love-message {
-            height: 40px;
-            color: var(--rosa-amor);
-            font-weight: bold;
-            font-size: 14px;
+        .ui { text-align: center; margin-bottom: 10px; width: 350px; }
+        #message-box {
+            min-height: 45px;
+            color: var(--rosa-fuerte);
+            font-size: 13px;
+            font-weight: 600;
             margin-top: 10px;
-            padding: 0 10px;
+            padding: 0 15px;
+            font-style: italic;
         }
 
         .controls {
-            margin-top: 20px;
+            margin-top: 15px;
             display: grid;
-            grid-template-columns: repeat(3, 70px);
-            gap: 10px;
+            grid-template-columns: repeat(3, 75px);
+            gap: 8px;
         }
         .btn-ctrl {
             background: white;
-            color: var(--rosa-amor);
-            border: 2px solid var(--rosa-suave);
-            padding: 18px;
-            border-radius: 50%;
-            font-weight: bold;
-            font-size: 20px;
-            box-shadow: 0 4px 0 var(--rosa-suave);
+            color: var(--rosa-fuerte);
+            border: 2px solid var(--rosa-claro);
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 22px;
+            box-shadow: 0 4px 0 var(--rosa-claro);
         }
-        .btn-ctrl:active { transform: translateY(3px); box-shadow: none; }
-        
-        #level-indicator { color: var(--rosa-amor); font-weight: 700; letter-spacing: 2px; }
+        .btn-ctrl:active { transform: translateY(2px); box-shadow: none; }
     </style>
 </head>
 <body>
 
+    <div id="victory-screen">
+        <div class="big-heart">❤️</div>
+        <h1 style="font-family: 'Dancing Script'; font-size: 2.5rem; color: #ff4d6d;">¡Lo lograste, Jhanny!</h1>
+        <p style="margin-top: 20px; font-size: 1.1rem; line-height: 1.6;">
+            Eres mi mayor tesoro.<br>
+            No importa la distancia ni los obstáculos,<br>
+            <b>mi corazón siempre será tuyo.</b>
+        </p>
+        <button onclick="location.reload()" style="margin-top:30px; padding:10px 20px; border-radius:20px; border:none; background: #ff4d6d; color:white;">Jugar de nuevo</button>
+    </div>
+
     <div class="ui">
-        <h1>Para Jhanny</h1>
-        <div id="level-indicator">AVENTURA 1</div>
-        <div id="love-message">Llega hasta mi corazón...</div>
+        <h1 style="font-family: 'Dancing Script'; color: #ff4d6d;">Para mi Jhanny</h1>
+        <div id="lvl-txt" style="font-weight: bold; color: #ffb703;">NIVEL 1: Un comienzo dulce</div>
+        <div id="message-box">Llega a la zona roja para avanzar...</div>
     </div>
 
     <div id="game-container">
-        <div class="zone start">INICIO</div>
-        <div class="zone end">TU<br>CORAZÓN</div>
+        <div class="zone start">SALIDA</div>
+        <div class="zone end">META</div>
         <div id="player">⭐</div>
     </div>
 
@@ -138,26 +171,27 @@
     <script>
         const player = document.getElementById('player');
         const container = document.getElementById('game-container');
-        const loveMessage = document.getElementById('love-message');
-        const levelDisplay = document.getElementById('level-indicator');
+        const msgBox = document.getElementById('message-box');
+        const lvlTxt = document.getElementById('lvl-txt');
         
-        let posX = 18;
+        let posX = 15;
         let posY = 135;
         let currentLevel = 1;
         let obstacles = [];
         let obsElements = [];
 
         const phrases = [
-            "¡Casi, mi amor! Inténtalo de nuevo.",
-            "Ni la distancia nos detiene.",
-            "Eres lo más lindo que tengo.",
-            "Jhanny, eres mi pensamiento favorito.",
-            "Un tropezón no es caída si es por ti.",
-            "¡Tú puedes, hermosa!",
-            "Cada paso es un 'te amo'.",
-            "Mi meta siempre eres tú.",
-            "Eres mi razón de sonreír.",
-            "¡Vamos Jhanny, te espero en la meta!"
+            "¡Tú puedes, mi vida!", "Eres mi pensamiento favorito.", "Cada intento es un te amo.",
+            "¡Casi lo tienes, hermosa!", "Eres la dueña de mi sonrisa.", "Eres mi sol de cada día.",
+            "¡Ánimo Jhanny!", "Mi corazón late por ti.", "Eres el regalo más lindo.",
+            "¡No te rindas, amor!", "A tu lado todo es mejor.", "Eres mi persona favorita.",
+            "Eres el amor de mi vida.", "¡Eres súper capaz!", "Te quiero infinitamente.",
+            "Eres mi razón de ser.", "¡Qué bien lo haces!", "Eres pura magia.",
+            "Amo tu persistencia.", "Eres increíble, Jhanny.", "Toda mi fuerza es tuya.",
+            "¡Eres una campeona!", "Te mando un beso enorme.", "Gracias por existir.",
+            "Eres mi sueño hecho realidad.", "¡Tú puedes con todo!", "Eres mi alegría.",
+            "¡Vamos, mi reina!", "Contigo el mundo es bello.", "Eres mi motivación.",
+            "¡Esa es mi Jhanny!", "Falta poquito para el final.", "Te adoro demasiado."
         ];
 
         function initLevel(level) {
@@ -165,18 +199,21 @@
             obstacles = [];
             obsElements = [];
 
-            // Configuración de niveles (obstáculos que representan "distracción", "tiempo", etc)
             if (level === 1) {
-                for(let i=0; i<4; i++) {
-                    obstacles.push({ x: 100 + (i*50), y: i*60, dir: 1, speed: 3 });
+                lvlTxt.innerText = "NIVEL 1: Un comienzo dulce";
+                for(let i=0; i<3; i++) {
+                    obstacles.push({ x: 100 + (i*60), y: i*50, dir: 1, speed: 3.5 });
                 }
             } else if (level === 2) {
-                for(let i=0; i<6; i++) {
-                    obstacles.push({ x: 80 + (i*40), y: i*40, dir: 1, speed: 5 });
+                lvlTxt.innerText = "NIVEL 2: Pasos con cariño";
+                // Ajustado para que sea posible pasar
+                for(let i=0; i<4; i++) {
+                    obstacles.push({ x: 80 + (i*55), y: i*40, dir: 1, speed: 4.5 });
                 }
             } else if (level === 3) {
-                for(let i=0; i<8; i++) {
-                    obstacles.push({ x: 70 + (i*35), y: Math.random()*250, dir: 1, speed: 4 + Math.random()*4 });
+                lvlTxt.innerText = "NIVEL 3: El camino al corazón";
+                for(let i=0; i<6; i++) {
+                    obstacles.push({ x: 70 + (i*40), y: Math.random()*240, dir: 1, speed: 5 });
                 }
             }
 
@@ -186,8 +223,6 @@
                 container.appendChild(el);
                 obsElements.push(el);
             });
-            
-            levelDisplay.innerText = "AVENTURA " + currentLevel;
         }
 
         function update() {
@@ -197,19 +232,17 @@
                 obsElements[i].style.left = ob.x + 'px';
                 obsElements[i].style.top = ob.y + 'px';
 
-                if (Math.abs(posX - ob.x) < 20 && Math.abs(posY - ob.y) < 20) {
+                if (Math.abs(posX - ob.x) < 18 && Math.abs(posY - ob.y) < 18) {
                     resetPosition();
                 }
             });
 
-            if (posX > 290) {
-                nextLevel();
-            }
+            if (posX > 295) nextLevel();
             requestAnimationFrame(update);
         }
 
         function move(dir) {
-            const step = 20;
+            const step = 22;
             if (dir === 'up' && posY > 10) posY -= step;
             if (dir === 'down' && posY < 265) posY += step;
             if (dir === 'left' && posX > 10) posX -= step;
@@ -220,8 +253,8 @@
         }
 
         function resetPosition() {
-            loveMessage.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-            posX = 18;
+            msgBox.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+            posX = 15;
             posY = 135;
             player.style.left = posX + 'px';
             player.style.top = posY + 'px';
@@ -230,28 +263,23 @@
         function nextLevel() {
             if (currentLevel < 3) {
                 currentLevel++;
-                posX = 18;
-                posY = 135;
+                posX = 15; posY = 135;
                 initLevel(currentLevel);
-                loveMessage.innerText = "¡Superaste el obstáculo! Sigamos...";
+                msgBox.innerText = "¡Excelente! Cada vez más cerca...";
             } else {
                 win();
             }
         }
 
         function win() {
+            document.getElementById('victory-screen').style.display = 'flex';
             confetti({
-                particleCount: 150,
-                spread: 70,
-                colors: ['#ff4d6d', '#ffb3c1', '#ffb703'],
-                origin: { y: 0.6 }
+                particleCount: 200,
+                spread: 90,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ffb3c1', '#ffb703']
             });
             posX = -1000;
-            loveMessage.innerHTML = "¡TE AMO JHANNY! ❤️";
-            alert("¡Felicidades mi vida! Has llegado a mi corazón.\n\nEres lo más especial para mí.");
-            currentLevel = 1;
-            posX = 18;
-            initLevel(1);
         }
 
         initLevel(1);
