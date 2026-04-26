@@ -3,276 +3,525 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DON'T PRESS IT!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Para Jhanny: No presiones ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;600;800&family=Bungee&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --red: #d90429;
-            --dark-red: #8d0801;
-            --bg: #0b090a;
-            --neon: #ef233c;
+            --primary: #ff4d6d;
+            --secondary: #ff758f;
+            --dark: #590d22;
+            --light: #fff0f3;
+            --accent: #ffb3c6;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; user-select: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            background-color: var(--bg);
-            font-family: 'Bungee', cursive;
+            background: var(--light);
+            background: linear-gradient(135deg, #fff0f3 0%, #ffb3c6 100%);
+            font-family: 'Montserrat', sans-serif;
             height: 100vh;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            perspective: 1000px;
+            color: var(--dark);
         }
 
-        /* Contenedor de partículas */
-        #particle-canvas {
-            position: absolute; inset: 0; pointer-events: none; z-index: 1;
+        /* Capa de Partículas */
+        #particle-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        /* El Narrador / Texto Troll */
-        #narrator-container {
-            position: absolute; top: 10%; width: 90%; max-width: 450px;
-            z-index: 10; pointer-events: none;
-        }
-
-        #bubble {
-            background: white; color: black; padding: 20px;
-            border-radius: 10px; border: 4px solid var(--red);
-            font-family: 'Press Start 2P', cursive; font-size: 11px;
-            text-align: center; line-height: 1.8;
-            box-shadow: 10px 10px 0px var(--dark-red);
+        /* Interfaz de Texto */
+        #ui-layer {
             position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            pointer-events: none;
         }
 
-        #bubble::after {
-            content: ''; position: absolute; bottom: -20px; left: 50%;
-            border-left: 15px solid transparent; border-right: 15px solid transparent;
-            border-top: 20px solid var(--red); transform: translateX(-50%);
+        h1#main-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+            pointer-events: auto;
         }
 
-        /* El Botón Maestro */
-        #btn-stage {
-            position: relative; width: 100vw; height: 60vh;
-            display: flex; align-items: center; justify-content: center; z-index: 5;
+        .stats {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 10px;
         }
 
-        .red-button {
-            width: 140px; height: 140px; background: var(--red);
-            border-radius: 50%; border: 6px solid var(--dark-red);
-            box-shadow: 0 10px 0 var(--dark-red), 0 0 40px rgba(239, 35, 60, 0.4);
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 50px; position: absolute;
-            transition: transform 0.1s;
+        /* El Botón Rebelde */
+        #game-area {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 5;
         }
 
-        .red-button:active { transform: scale(0.9) translateY(8px); box-shadow: 0 2px 0 var(--dark-red); }
-
-        /* Estados Especiales */
-        .glitch-effect { animation: glitch 0.1s infinite; }
-        @keyframes glitch {
-            0% { transform: translate(2px, -2px); filter: hue-rotate(90deg); }
-            50% { transform: translate(-2px, 2px); filter: invert(1); }
-            100% { transform: translate(1px, 1px); }
+        #the-button {
+            position: absolute;
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            font-family: 'Bungee', cursive;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+            transition: transform 0.1s, background 0.3s, opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            z-index: 100;
         }
 
-        /* Pantalla de Victoria */
-        #victory {
-            position: fixed; inset: 0; background: white;
-            display: none; flex-direction: column; align-items: center;
-            justify-content: center; z-index: 1000; color: black;
-            animation: fadeIn 1s forwards;
+        #the-button:active {
+            transform: scale(0.9);
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Barra de Progreso Troll */
-        #progress-bar {
-            position: absolute; bottom: 50px; width: 80%; height: 20px;
-            background: #333; border: 3px solid white; border-radius: 10px;
-            overflow: hidden;
+        /* Modales de Decisión */
+        #decision-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(89, 13, 34, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            color: white;
         }
-        #progress-fill {
-            width: 0%; height: 100%; background: var(--neon);
-            transition: width 0.3s;
+
+        .decision-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            color: var(--dark);
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .decision-card h2 {
+            margin-bottom: 20px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+        }
+
+        .btn-choice {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: transparent;
+            color: var(--dark);
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-choice:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Pantalla Final */
+        #final-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--dark);
+            z-index: 300;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .final-heart {
+            font-size: 100px;
+            animation: pulse 1s infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .final-btns {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn-final {
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        #btn-si { background: #39ff14; color: #003300; }
+        #btn-no { background: #ff003c; color: white; }
+
+        /* Efecto Typewriter */
+        .typing::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Shake effect */
+        .shake { animation: shake 0.3s; }
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-10px, 0); }
+            75% { transform: translate(10px, 0); }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
+    <div id="particle-container"></div>
 
-    <div id="narrator-container">
-        <div id="bubble">ADVERTENCIA:<br>NO TOCAR EL BOTÓN ROJO</div>
+    <div id="ui-layer">
+        <div class="stats">Nivel de Conexión: <span id="level-num">0</span>%</div>
+        <h1 id="main-text">Jhanny, por favor, NO presiones el botón.</h1>
     </div>
 
-    <div id="btn-stage">
-        <div id="main-btn" class="red-button">🦁</div>
+    <div id="game-area">
+        <button id="the-button">NO TOCAR ❤️</button>
     </div>
 
-    <div id="progress-bar">
-        <div id="progress-fill"></div>
+    <div id="decision-overlay">
+        <div class="decision-card">
+            <h2 id="dec-title">¿Qué quieres hacer?</h2>
+            <p id="dec-desc" style="margin-bottom: 20px;">Jhanny, esto se está poniendo serio...</p>
+            <div id="choices-container"></div>
+        </div>
     </div>
 
-    <div id="victory">
-        <h1 style="font-size: 40px;">¡ME RENDÍ!</h1>
-        <p style="margin: 20px; text-align: center;">Jhanny, eres demasiado persistente.<br>Toma mi corazón.</p>
-        <div style="font-size: 100px;">🦁💖👸🏻</div>
-        <button onclick="location.reload()" style="margin-top: 30px; padding: 15px; font-family: 'Bungee'; cursor: pointer;">REINTENTAR</button>
+    <div id="final-screen">
+        <div class="final-heart">💖</div>
+        <h1 id="final-msg" style="font-family: 'Dancing Script', cursive; font-size: 3rem; padding: 20px;">Jhanny...</h1>
+        <p id="final-sub" style="max-width: 80%; margin: 0 auto; line-height: 1.6;"></p>
+        
+        <div class="final-btns" id="final-btns-group">
+            <button class="btn-final" id="btn-si" onclick="celebrate(true)">SÍ ❤️</button>
+            <button class="btn-final" id="btn-no" onclick="celebrate(false)">NO 💔</button>
+        </div>
     </div>
 
     <script>
-        const btn = document.getElementById('main-btn');
-        const bubble = document.getElementById('bubble');
-        const fill = document.getElementById('progress-fill');
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let clicks = 0;
-        let particles = [];
-        const maxClicks = 40;
-
-        const trollMessages = [
-            "¡Hey! Te dije que no.", "¿No sabes leer?", "Oye, eso dolió un poquito.",
-            "¡Basta Jhanny!", "Si sigues, llamo al León.", "¡Upa! Casi me atrapas.",
-            "¡Soy flash! ⚡", "Jajaja, ¡qué lenta!", "¿Ese es tu mejor dedo?",
-            "Instalando modo difícil...", "¡Trolleadísima!", "¡Boom! (Broma)",
-            "¿Ya te cansaste, reina?", "¡Soy invisible! 👻", "¡Clones activados!",
-            "Esa puntería... nivel 1.", "No me toques ahí.", "¡Ups! Error 404.",
-            "Jhanny, ve a comer un muffin.", "¡Ja! Te engañé.", "¿Sigues aquí?",
-            "¡Me estoy enojando!", "Cada clic es un castigo.", "¡No podrás ganarme!",
-            "¡Soy el botón legendario!", "Ríndete y te doy un dulce.", "¡Vaya fail!",
-            "¡Mira detrás de ti! 🦁", "¡Me muevo solo!", "¡Casi! Pero NO.",
-            "¿Tanto quieres un SÍ?", "¡Soy intocable!", "¡Glitch mental!",
-            "¡Qué pesada eres!", "Te faltan vitaminas.", "¡Estoy sudando!",
-            "¡Ya casi... o tal vez no!", "¡Última oportunidad!", "¡Está bien, tú ganas!",
-            "¡PRESIONA UNA VEZ MÁS!"
+        // --- CONFIGURACIÓN DE MENSAJES (40 MENSAJES TROLL/ROMÁNTICOS) ---
+        const messages = [
+            "Te dije que no lo hicieras...",
+            "Oye... ¿por qué eres tan terca? 😳",
+            "Ya van dos veces, Jhanny. Para.",
+            "¡Cuidado! Si sigues, algo podría pasar.",
+            "¿Sabes que soy experto en esquivar, no?",
+            "¡Upsi! Por aquí no.",
+            "¿Acaso no tienes mejores cosas que hacer?",
+            "Bueno, si insistes tanto... ¿será que te gusto? 😏",
+            "¡Ja! Soy más rápido que tus dedos.",
+            "Okay, me quedaré quieto... ¡MENTIRA! 😂",
+            "Jhanny, tus clics se sienten como cosquillas.",
+            "¿Qué buscas presionando tanto?",
+            "A ver, intenta atraparme ahora.",
+            "¿Te ríndes? Apuesto a que sí.",
+            "Esa insistencia tuya es... interesante.",
+            "Me recuerdas a alguien que no se rinde por lo que quiere.",
+            "¡No me toques! Soy tímido.",
+            "Vale, hablemos en serio por un segundo...",
+            "Cada vez que me atrapas, me sacas una sonrisa.",
+            "Jhanny, ¿sabes que eres especial?",
+            "Me gusta cómo te esfuerzas por lograr lo que quieres.",
+            "¿Sentiste eso? Fue una chispa.",
+            "Me estoy volviendo más difícil porque no quiero que esto acabe.",
+            "Eres el caos más bonito que he encontrado.",
+            "Incluso cuando me molestas, me haces feliz.",
+            "A veces las cosas difíciles son las que más valen la pena.",
+            "Como atrapar este botón... o atrapar mi corazón.",
+            "¿Te has fijado en cómo brillan tus ojos al reír?",
+            "Me tienes dando vueltas, igual que este botón.",
+            "Jhanny, eres mi distracción favorita.",
+            "No quiero que dejes de intentarlo.",
+            "Prometo que el final valdrá la pena.",
+            "Casi llegamos al final de este juego.",
+            "Pero espero que sea el inicio de algo más.",
+            "Me encanta tu nombre, suena a música.",
+            "¿Ya te dije que me encantas?",
+            "Unos clics más... no te rindas ahora.",
+            "Eres increíble, Jhanny. De verdad.",
+            "Estamos a un paso de la verdad.",
+            "Último clic. Hazlo con el corazón."
         ];
 
-        // Clase Partícula para efectos visuales
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x; this.y = y;
-                this.size = Math.random() * 5 + 2;
-                this.speedX = Math.random() * 6 - 3;
-                this.speedY = Math.random() * 6 - 3;
-                this.color = color;
-                this.life = 1;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.life -= 0.02;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.life;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        // --- ESTADO DEL JUEGO ---
+        let clickCount = 0;
+        let speed = 0.5;
+        let isMoving = false;
+        let gameActive = true;
 
-        function createExplosion(x, y) {
-            for (let i = 0; i < 15; i++) {
-                particles.push(new Particle(x, y, '#ff003c'));
-            }
-        }
+        const btn = document.getElementById('the-button');
+        const mainText = document.getElementById('main-text');
+        const levelNum = document.getElementById('level-num');
+        const particleContainer = document.getElementById('particle-container');
 
-        function moveButtonRandomly() {
-            const stage = document.getElementById('btn-stage');
-            const x = Math.random() * (stage.clientWidth - 150);
-            const y = Math.random() * (stage.clientHeight - 150);
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
-        }
-
-        function handlePress(e) {
-            clicks++;
-            createExplosion(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY);
+        // --- LÓGICA DEL BOTÓN ---
+        function moveButton() {
+            if (!gameActive) return;
             
-            // Actualizar barra y mensajes
-            const progress = (clicks / maxClicks) * 100;
-            fill.style.width = progress + '%';
+            const area = document.body;
+            const pad = 100;
+            const newX = Math.random() * (area.clientWidth - btn.clientWidth - pad) + pad/2;
+            const newY = Math.random() * (area.clientHeight - btn.clientHeight - pad) + pad/2;
             
-            if (clicks < trollMessages.length) {
-                bubble.innerText = trollMessages[clicks];
-            }
+            btn.style.left = `${newX}px`;
+            btn.style.top = `${newY}px`;
 
-            // FASES DEL JUEGO
-            // Fase 1: Movimiento simple
-            if (clicks >= 5 && clicks < 15) {
-                moveButtonRandomly();
+            // Efectos de tamaño aleatorios en niveles altos
+            if (clickCount > 15) {
+                const scale = 0.7 + Math.random() * 0.8;
+                btn.style.transform = `scale(${scale})`;
             }
-            
-            // Fase 2: Velocidad y Clones
-            if (clicks >= 15 && clicks < 25) {
-                btn.style.transition = 'all 0.05s'; // Más rápido
-                moveButtonRandomly();
-                if(Math.random() > 0.5) btn.style.opacity = '0.3';
-                else btn.style.opacity = '1';
-            }
-
-            // Fase 3: Modo Glitch e invisible
-            if (clicks >= 25 && clicks < 35) {
-                btn.classList.add('glitch-effect');
-                moveButtonRandomly();
-                document.body.style.backgroundColor = (clicks % 2 === 0) ? '#1a1a1a' : '#0b090a';
-            }
-
-            // Fase Final: El botón se rinde
-            if (clicks >= 38) {
-                btn.classList.remove('glitch-effect');
-                btn.style.opacity = '1';
-                btn.style.left = '50%';
-                btn.style.top = '50%';
-                btn.style.transform = 'translate(-50%, -50%) scale(2)';
-                btn.innerHTML = '✨SÍ✨';
-            }
-
-            if (clicks >= maxClicks) {
-                document.getElementById('victory').style.display = 'flex';
-            }
-
-            // Sacudida de cámara
-            document.body.classList.add('shake');
-            setTimeout(() => document.body.classList.remove('shake'), 100);
         }
 
-        // Listener para clics y toques
-        btn.addEventListener('pointerdown', handlePress);
+        // Detectar proximidad (Esquive)
+        document.addEventListener('mousemove', (e) => {
+            if (clickCount < 3 || !gameActive) return;
 
-        // Bucle de animación para partículas
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, index) => {
-                p.update();
-                p.draw();
-                if (p.life <= 0) particles.splice(index, 1);
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
+            const btnRect = btn.getBoundingClientRect();
+            const btnCenterX = btnRect.left + btnRect.width / 2;
+            const btnCenterY = btnRect.top + btnRect.height / 2;
 
-        // Ajustar canvas
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const distance = Math.hypot(e.clientX - btnCenterX, e.clientY - btnCenterY);
+            const threshold = 150 - (clickCount * 2); // Se vuelve más difícil
+
+            if (distance < Math.max(threshold, 60)) {
+                moveButton();
+            }
         });
-    </script>
 
-    <style>
-        .shake { animation: screenShake 0.1s linear 2; }
-        @keyframes screenShake {
-            0% { transform: translate(5px, 5px); }
-            50% { transform: translate(-5px, -5px); }
-            100% { transform: translate(0); }
+        // Soporte para Touch
+        btn.addEventListener('touchstart', (e) => {
+            if (clickCount > 5) {
+                e.preventDefault();
+                moveButton();
+            }
+        });
+
+        // Click Exitoso
+        btn.addEventListener('click', () => {
+            if (!gameActive) return;
+            
+            clickCount++;
+            updateGame();
+            createHeartExplosion();
+            
+            // Pausas para decisiones
+            if (clickCount === 10) triggerDecision(1);
+            if (clickCount === 25) triggerDecision(2);
+            
+            if (clickCount >= messages.length) {
+                showFinalScreen();
+            } else {
+                moveButton();
+            }
+        });
+
+        function updateGame() {
+            const progress = Math.floor((clickCount / messages.length) * 100);
+            levelNum.innerText = progress;
+            
+            // Efecto Typewriter
+            mainText.classList.remove('typing');
+            void mainText.offsetWidth; // Reset animation
+            mainText.innerText = messages[clickCount];
+            mainText.classList.add('typing');
+
+            // Cambiar textos del botón
+            const btnTexts = ["ATRAPAME", "CÁSI", "NUP", "❤️", "JHANNY", "¡POR AQUÍ!", "DAME UN CLIC"];
+            btn.innerText = btnTexts[Math.floor(Math.random() * btnTexts.length)];
         }
-    </style>
+
+        // --- SISTEMA DE DECISIONES ---
+        function triggerDecision(step) {
+            gameActive = false;
+            const overlay = document.getElementById('decision-overlay');
+            const choices = document.getElementById('choices-container');
+            choices.innerHTML = '';
+            overlay.style.display = 'flex';
+
+            if (step === 1) {
+                document.getElementById('dec-title').innerText = "Un momento de honestidad...";
+                document.getElementById('dec-desc').innerText = "Jhanny, ¿qué piensas de este juego hasta ahora?";
+                addChoice("Es divertido, quiero seguir.", () => resumeGame("¡Me gusta tu actitud! Sigamos."));
+                addChoice("Eres un poco molesto jaja.", () => resumeGame("Lo sé, pero así me quieres. 😉"));
+            } else {
+                document.getElementById('dec-title').innerText = "El corazón late más rápido...";
+                document.getElementById('dec-desc').innerText = "¿Te gustaría saber qué hay al final de todo esto?";
+                addChoice("Dime ya, por favor.", () => resumeGame("La paciencia es una virtud... pero falta poco."));
+                addChoice("Me gusta el misterio.", () => resumeGame("Esa es mi parte favorita de ti."));
+            }
+        }
+
+        function addChoice(text, action) {
+            const btn = document.createElement('button');
+            btn.className = 'btn-choice';
+            btn.innerText = text;
+            btn.onclick = action;
+            document.getElementById('choices-container').appendChild(btn);
+        }
+
+        function resumeGame(msg) {
+            document.getElementById('decision-overlay').style.display = 'none';
+            gameActive = true;
+            mainText.innerText = msg;
+            moveButton();
+        }
+
+        // --- EFECTOS VISUALES ---
+        function createHeartExplosion() {
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = ['❤️', '💖', '✨', '🌸'][Math.floor(Math.random() * 4)];
+                heart.style.position = 'fixed';
+                heart.style.left = (btn.offsetLeft + btn.offsetWidth/2) + 'px';
+                heart.style.top = (btn.offsetTop + btn.offsetHeight/2) + 'px';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '150';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 10 + 5;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                document.body.appendChild(heart);
+                
+                let opacity = 1;
+                let x = btn.offsetLeft + btn.offsetWidth/2;
+                let y = btn.offsetTop + btn.offsetHeight/2;
+
+                const anim = setInterval(() => {
+                    x += vx;
+                    y += vy;
+                    opacity -= 0.02;
+                    heart.style.left = x + 'px';
+                    heart.style.top = y + 'px';
+                    heart.style.opacity = opacity;
+                    if (opacity <= 0) {
+                        clearInterval(anim);
+                        heart.remove();
+                    }
+                }, 16);
+            }
+        }
+
+        // --- FINAL ---
+        function showFinalScreen() {
+            gameActive = false;
+            btn.style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+            
+            const sub = "Jhanny, empezamos esto como un juego, pero cada mensaje que leíste es una verdad que guardo. Has tenido la paciencia para llegar hasta aquí, y yo tengo el corazón listo para preguntarte...";
+            typeEffect(document.getElementById('final-sub'), sub);
+            
+            setTimeout(() => {
+                document.getElementById('final-msg').innerText = "¿Jhanny, quieres ser mi novia?";
+            }, 3000);
+        }
+
+        function typeEffect(element, text) {
+            let i = 0;
+            element.innerText = "";
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.innerText += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, 40);
+        }
+
+        function celebrate(isYes) {
+            const screen = document.getElementById('final-screen');
+            const btns = document.getElementById('final-btns-group');
+            btns.style.display = 'none';
+
+            if (isYes) {
+                screen.style.background = 'linear-gradient(to bottom, #ff4d6d, #ff758f)';
+                document.getElementById('final-msg').innerText = "¡ERES LO MEJOR QUE ME HA PASADO! ❤️";
+                document.getElementById('final-sub').innerText = "Prometo cuidarte, hacerte reír y nunca dejar de jugar contigo. Te quiero, Jhanny.";
+                
+                // Lluvia masiva de corazones
+                setInterval(() => {
+                    const h = document.createElement('div');
+                    h.innerHTML = "❤️";
+                    h.style.position = 'fixed';
+                    h.style.left = Math.random() * 100 + 'vw';
+                    h.style.top = '-50px';
+                    h.style.fontSize = '30px';
+                    h.style.transition = 'all 3s linear';
+                    document.body.appendChild(h);
+                    setTimeout(() => {
+                        h.style.top = '110vh';
+                        h.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    }, 10);
+                    setTimeout(() => h.remove(), 3000);
+                }, 100);
+            } else {
+                document.getElementById('final-msg').innerText = "Entiendo, Jhanny... 💔";
+                document.getElementById('final-sub').innerText = "Gracias por jugar conmigo hasta el final. Siempre serás alguien muy especial para este León.";
+                screen.style.background = "#2b2d42";
+            }
+        }
+
+        // Inicializar
+        window.onload = () => {
+            btn.style.left = "50%";
+            btn.style.top = "50%";
+            btn.style.transform = "translate(-50%, -50%)";
+        };
+    </script>
 </body>
 </html>
