@@ -3,525 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Para Jhanny: No presiones ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;600;800&family=Bungee&display=swap" rel="stylesheet">
-    
+    <title>Para mi Jhanny ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff4d6d;
-            --secondary: #ff758f;
-            --dark: #590d22;
-            --light: #fff0f3;
-            --accent: #ffb3c6;
+            --rosa-amor: #ff4d6d;
+            --rosa-suave: #fff0f3;
+            --dorado: #ffb703;
+            --texto: #590d22;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; user-select: none; }
 
         body {
-            background: var(--light);
-            background: linear-gradient(135deg, #fff0f3 0%, #ffb3c6 100%);
+            background-color: var(--rosa-suave);
             font-family: 'Montserrat', sans-serif;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--dark);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; overflow: hidden; color: var(--texto);
         }
 
-        /* Capa de Partículas */
-        #particle-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 1;
+        /* TÍTULO Y ESTADÍSTICAS */
+        #header {
+            text-align: center; margin-bottom: 20px; z-index: 10;
         }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--rosa-amor); text-shadow: 2px 2px 0px white; }
+        .stats { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--rosa-amor); }
 
-        /* Interfaz de Texto */
-        #ui-layer {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            width: 90%;
-            max-width: 600px;
-            pointer-events: none;
+        /* EL NARRADOR TROLL */
+        #troll-bubble {
+            background: white; color: black; padding: 15px; border-radius: 15px;
+            font-family: 'Press Start 2P', cursive; font-size: 10px; line-height: 1.6;
+            width: 80%; max-width: 400px; text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2);
+            margin-bottom: 30px; z-index: 10;
+            border: 2px solid var(--rosa-amor);
+            animation: float 2s infinite ease-in-out;
         }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        h1#main-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.05);
-            pointer-events: auto;
-        }
-
-        .stats {
-            font-size: 0.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        /* El Botón Rebelde */
+        /* EL ÁREA DE JUEGO */
         #game-area {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 5;
+            position: relative; width: 100vw; height: 50vh;
+            display: flex; align-items: center; justify-content: center;
         }
 
+        /* EL BOTÓN (Ahí está el trolleo) */
         #the-button {
-            position: absolute;
-            padding: 20px 40px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            font-family: 'Bungee', cursive;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
-            transition: transform 0.1s, background 0.3s, opacity 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            z-index: 100;
+            width: 130px; height: 130px; background: var(--rosa-amor);
+            border-radius: 50%; border: 6px solid #c9184a;
+            box-shadow: 0 10px 0 #c9184a, 0 0 30px rgba(255, 77, 109, 0.4);
+            cursor: pointer; position: absolute; z-index: 50;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 40px; transition: transform 0.1s, top 0.4s ease-out, left 0.4s ease-out;
         }
+        #the-button:active { transform: translateY(10px) scale(0.95); box-shadow: 0 0 0 #c9184a; }
 
-        #the-button:active {
-            transform: scale(0.9);
-        }
-
-        /* Modales de Decisión */
-        #decision-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(89, 13, 34, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 200;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        /* PANTALLA FINAL */
+        #win-screen {
+            position: fixed; inset: 0; background: var(--rosa-amor);
+            display: none; flex-direction: column; align-items: center;
+            justify-content: center; z-index: 100; text-align: center; color: white;
             padding: 20px;
-            text-align: center;
-            color: white;
         }
 
-        .decision-card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            color: var(--dark);
-            max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-
-        .decision-card h2 {
-            margin-bottom: 20px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-        }
-
-        .btn-choice {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            background: transparent;
-            color: var(--dark);
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-choice:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Pantalla Final */
-        #final-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--dark);
-            z-index: 300;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-        }
-
-        .final-heart {
-            font-size: 100px;
-            animation: pulse 1s infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .final-btns {
-            display: flex;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .btn-final {
-            padding: 15px 40px;
-            border-radius: 50px;
-            border: none;
-            font-weight: 800;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        #btn-si { background: #39ff14; color: #003300; }
-        #btn-no { background: #ff003c; color: white; }
-
-        /* Efecto Typewriter */
-        .typing::after {
-            content: '|';
-            animation: blink 0.7s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-
-        /* Shake effect */
-        .shake { animation: shake 0.3s; }
-        @keyframes shake {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-10px, 0); }
-            75% { transform: translate(10px, 0); }
-        }
+        /* EFECTOS VISUALES */
+        .confetti { position: absolute; width: 10px; height: 10px; background: var(--dorado); border-radius: 50%; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div id="particle-container"></div>
-
-    <div id="ui-layer">
-        <div class="stats">Nivel de Conexión: <span id="level-num">0</span>%</div>
-        <h1 id="main-text">Jhanny, por favor, NO presiones el botón.</h1>
+    <div id="header">
+        <h1>Para Jhanny</h1>
+        <div class="stats">Nivel: <span id="lvl">1</span>/3 | Intentos: <span id="clicks">0</span></div>
     </div>
+
+    <div id="troll-bubble">¿Podrás atrapar el "SÍ" de este León? Jajaja.</div>
 
     <div id="game-area">
-        <button id="the-button">NO TOCAR ❤️</button>
+        <div id="the-button" onclick="handlePress()">🦁</div>
     </div>
 
-    <div id="decision-overlay">
-        <div class="decision-card">
-            <h2 id="dec-title">¿Qué quieres hacer?</h2>
-            <p id="dec-desc" style="margin-bottom: 20px;">Jhanny, esto se está poniendo serio...</p>
-            <div id="choices-container"></div>
-        </div>
+    <div id="win-screen">
+        <h1 style="font-family: 'Dancing Script'; font-size: 4rem;">¡BOOYAH! ❤️</h1>
+        <p style="margin: 20px 0; font-size: 1.2rem;">Jhanny, eres persistente... ¡Me encanta! Admitiré que te ganaste mi "SÍ" y mi corazón.</p>
+        <div style="font-size: 80px;">🦁💖👸🏻</div>
+        <button onclick="location.reload()" style="margin-top: 30px; padding: 10px 20px; border-radius: 10px; border: none; font-weight: bold; background: white; color: var(--rosa-amor);">REPETIR</button>
     </div>
 
-    <div id="final-screen">
-        <div class="final-heart">💖</div>
-        <h1 id="final-msg" style="font-family: 'Dancing Script', cursive; font-size: 3rem; padding: 20px;">Jhanny...</h1>
-        <p id="final-sub" style="max-width: 80%; margin: 0 auto; line-height: 1.6;"></p>
-        
-        <div class="final-btns" id="final-btns-group">
-            <button class="btn-final" id="btn-si" onclick="celebrate(true)">SÍ ❤️</button>
-            <button class="btn-final" id="btn-no" onclick="celebrate(false)">NO 💔</button>
-        </div>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        // --- CONFIGURACIÓN DE MENSAJES (40 MENSAJES TROLL/ROMÁNTICOS) ---
-        const messages = [
-            "Te dije que no lo hicieras...",
-            "Oye... ¿por qué eres tan terca? 😳",
-            "Ya van dos veces, Jhanny. Para.",
-            "¡Cuidado! Si sigues, algo podría pasar.",
-            "¿Sabes que soy experto en esquivar, no?",
-            "¡Upsi! Por aquí no.",
-            "¿Acaso no tienes mejores cosas que hacer?",
-            "Bueno, si insistes tanto... ¿será que te gusto? 😏",
-            "¡Ja! Soy más rápido que tus dedos.",
-            "Okay, me quedaré quieto... ¡MENTIRA! 😂",
-            "Jhanny, tus clics se sienten como cosquillas.",
-            "¿Qué buscas presionando tanto?",
-            "A ver, intenta atraparme ahora.",
-            "¿Te ríndes? Apuesto a que sí.",
-            "Esa insistencia tuya es... interesante.",
-            "Me recuerdas a alguien que no se rinde por lo que quiere.",
-            "¡No me toques! Soy tímido.",
-            "Vale, hablemos en serio por un segundo...",
-            "Cada vez que me atrapas, me sacas una sonrisa.",
-            "Jhanny, ¿sabes que eres especial?",
-            "Me gusta cómo te esfuerzas por lograr lo que quieres.",
-            "¿Sentiste eso? Fue una chispa.",
-            "Me estoy volviendo más difícil porque no quiero que esto acabe.",
-            "Eres el caos más bonito que he encontrado.",
-            "Incluso cuando me molestas, me haces feliz.",
-            "A veces las cosas difíciles son las que más valen la pena.",
-            "Como atrapar este botón... o atrapar mi corazón.",
-            "¿Te has fijado en cómo brillan tus ojos al reír?",
-            "Me tienes dando vueltas, igual que este botón.",
-            "Jhanny, eres mi distracción favorita.",
-            "No quiero que dejes de intentarlo.",
-            "Prometo que el final valdrá la pena.",
-            "Casi llegamos al final de este juego.",
-            "Pero espero que sea el inicio de algo más.",
-            "Me encanta tu nombre, suena a música.",
-            "¿Ya te dije que me encantas?",
-            "Unos clics más... no te rindas ahora.",
-            "Eres increíble, Jhanny. De verdad.",
-            "Estamos a un paso de la verdad.",
-            "Último clic. Hazlo con el corazón."
+        const btn = document.getElementById('the-button');
+        const bubble = document.getElementById('troll-bubble');
+        let clicks = 0;
+        let level = 1;
+        let btnMoving = false;
+
+        const trollMessages = [
+            "¿Tú me quieres? Jajaja a ver si es cierto.", "¿Eso fue un clic o un espasmo?", "¡Qué terca eres, Jhanny!", 
+            "Mi abuela es más rápida tocando botones.", "¿Así persigues lo que quieres?", "¡Trolleadísima!", 
+            "El SÍ es lava, ¡no lo toques!", "¿Ya te cansaste de fracasar?", "¡Por ahí no es!", 
+            "Ese dedo necesita vitaminas.", "¿Necesitas un mapa para encontrarme?", "Casi... pero NO.", 
+            "Instalando modo 'para bebés'...", "¿Sentiste eso? Fue el viento de mi velocidad.", "¡Uupsi! Por aquí no.",
+            "¡Eres un meme andante!", "No sirves para esto, acéptalo.", "¿Te ríndes?", "Cada clic es un castigo, no un amor.",
+            "El León está muy ocupado para tus clics.", "¡No me toques!", "¿No tienes nada mejor que hacer?", "¡Me muero de risa!",
+            "Esa puntería... nivel 1.", "Si sigues, llamo a la policía del amor.", "¿Segura que no quieres rendirte?",
+            "¡Qué risa me das!", "Error 404: Habilidad no encontrada.", "¿Ya lloraste?", "Me estoy enojando, Jhanny...",
+            "¡Casi te doy el SÍ! Mentira 😂", "A este paso terminamos en 2030.", "No me vas a atrapar nunca.", 
+            "¡Qué flojera das!", "¿Ya te cansaste de perder?", "Sigue intentando, exploradora de pacotilla.",
+            "¡Atrapado! Ah no, fui yo.", "¡Qué pesada eres!", "Ya casi se me acaba la paciencia...", 
+            "PRESIONA UNA VEZ MÁS... ¡SI PUEDES!"
         ];
 
-        // --- ESTADO DEL JUEGO ---
-        let clickCount = 0;
-        let speed = 0.5;
-        let isMoving = false;
-        let gameActive = true;
-
-        const btn = document.getElementById('the-button');
-        const mainText = document.getElementById('main-text');
-        const levelNum = document.getElementById('level-num');
-        const particleContainer = document.getElementById('particle-container');
-
-        // --- LÓGICA DEL BOTÓN ---
-        function moveButton() {
-            if (!gameActive) return;
-            
-            const area = document.body;
-            const pad = 100;
-            const newX = Math.random() * (area.clientWidth - btn.clientWidth - pad) + pad/2;
-            const newY = Math.random() * (area.clientHeight - btn.clientHeight - pad) + pad/2;
-            
-            btn.style.left = `${newX}px`;
-            btn.style.top = `${newY}px`;
-
-            // Efectos de tamaño aleatorios en niveles altos
-            if (clickCount > 15) {
-                const scale = 0.7 + Math.random() * 0.8;
-                btn.style.transform = `scale(${scale})`;
-            }
-        }
-
-        // Detectar proximidad (Esquive)
-        document.addEventListener('mousemove', (e) => {
-            if (clickCount < 3 || !gameActive) return;
-
-            const btnRect = btn.getBoundingClientRect();
-            const btnCenterX = btnRect.left + btnRect.width / 2;
-            const btnCenterY = btnRect.top + btnRect.height / 2;
-
-            const distance = Math.hypot(e.clientX - btnCenterX, e.clientY - btnCenterY);
-            const threshold = 150 - (clickCount * 2); // Se vuelve más difícil
-
-            if (distance < Math.max(threshold, 60)) {
-                moveButton();
-            }
+        // Mover Jhanny (Emoji de Princesa) al lugar del clic
+        document.body.addEventListener('click', (e) => {
+            if(e.target.id === 'the-button' || btnMoving) return;
+            const princess = document.createElement('div');
+            princess.innerText = '👸🏻';
+            princess.style.position = 'fixed';
+            princess.style.fontSize = '30px';
+            princess.style.left = e.clientX - 15 + 'px';
+            princess.style.top = e.clientY - 15 + 'px';
+            princess.style.pointerEvents = 'none';
+            princess.style.zIndex = '100';
+            princess.style.transition = 'opacity 1s';
+            document.body.appendChild(princess);
+            setTimeout(() => { princess.style.opacity = '0'; setTimeout(() => princess.remove(), 1000); }, 100);
         });
 
-        // Soporte para Touch
-        btn.addEventListener('touchstart', (e) => {
-            if (clickCount > 5) {
-                e.preventDefault();
-                moveButton();
+        function handlePress() {
+            if(btnMoving) return; // Evitar spam de clics
+            clicks++;
+            document.getElementById('clicks').innerText = clicks;
+            
+            // Efecto Confeti tierno
+            confetti({ particleCount: 20, spread: 30, colors: ['#ff4d6d', '#ffb703'], origin: { y: 0.7 } });
+
+            // Actualizar mensaje (40 mensajes)
+            if (clicks < trollMessages.length) {
+                bubble.innerText = trollMessages[clicks];
             }
-        });
 
-        // Click Exitoso
-        btn.addEventListener('click', () => {
-            if (!gameActive) return;
-            
-            clickCount++;
-            updateGame();
-            createHeartExplosion();
-            
-            // Pausas para decisiones
-            if (clickCount === 10) triggerDecision(1);
-            if (clickCount === 25) triggerDecision(2);
-            
-            if (clickCount >= messages.length) {
-                showFinalScreen();
-            } else {
-                moveButton();
-            }
-        });
-
-        function updateGame() {
-            const progress = Math.floor((clickCount / messages.length) * 100);
-            levelNum.innerText = progress;
-            
-            // Efecto Typewriter
-            mainText.classList.remove('typing');
-            void mainText.offsetWidth; // Reset animation
-            mainText.innerText = messages[clickCount];
-            mainText.classList.add('typing');
-
-            // Cambiar textos del botón
-            const btnTexts = ["ATRAPAME", "CÁSI", "NUP", "❤️", "JHANNY", "¡POR AQUÍ!", "DAME UN CLIC"];
-            btn.innerText = btnTexts[Math.floor(Math.random() * btnTexts.length)];
-        }
-
-        // --- SISTEMA DE DECISIONES ---
-        function triggerDecision(step) {
-            gameActive = false;
-            const overlay = document.getElementById('decision-overlay');
-            const choices = document.getElementById('choices-container');
-            choices.innerHTML = '';
-            overlay.style.display = 'flex';
-
-            if (step === 1) {
-                document.getElementById('dec-title').innerText = "Un momento de honestidad...";
-                document.getElementById('dec-desc').innerText = "Jhanny, ¿qué piensas de este juego hasta ahora?";
-                addChoice("Es divertido, quiero seguir.", () => resumeGame("¡Me gusta tu actitud! Sigamos."));
-                addChoice("Eres un poco molesto jaja.", () => resumeGame("Lo sé, pero así me quieres. 😉"));
-            } else {
-                document.getElementById('dec-title').innerText = "El corazón late más rápido...";
-                document.getElementById('dec-desc').innerText = "¿Te gustaría saber qué hay al final de todo esto?";
-                addChoice("Dime ya, por favor.", () => resumeGame("La paciencia es una virtud... pero falta poco."));
-                addChoice("Me gusta el misterio.", () => resumeGame("Esa es mi parte favorita de ti."));
-            }
-        }
-
-        function addChoice(text, action) {
-            const btn = document.createElement('button');
-            btn.className = 'btn-choice';
-            btn.innerText = text;
-            btn.onclick = action;
-            document.getElementById('choices-container').appendChild(btn);
-        }
-
-        function resumeGame(msg) {
-            document.getElementById('decision-overlay').style.display = 'none';
-            gameActive = true;
-            mainText.innerText = msg;
-            moveButton();
-        }
-
-        // --- EFECTOS VISUALES ---
-        function createHeartExplosion() {
-            for (let i = 0; i < 12; i++) {
-                const heart = document.createElement('div');
-                heart.innerHTML = ['❤️', '💖', '✨', '🌸'][Math.floor(Math.random() * 4)];
-                heart.style.position = 'fixed';
-                heart.style.left = (btn.offsetLeft + btn.offsetWidth/2) + 'px';
-                heart.style.top = (btn.offsetTop + btn.offsetHeight/2) + 'px';
-                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
-                heart.style.pointerEvents = 'none';
-                heart.style.zIndex = '150';
-                
-                const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 10 + 5;
-                const vx = Math.cos(angle) * velocity;
-                const vy = Math.sin(angle) * velocity;
-                
-                document.body.appendChild(heart);
-                
-                let opacity = 1;
-                let x = btn.offsetLeft + btn.offsetWidth/2;
-                let y = btn.offsetTop + btn.offsetHeight/2;
-
-                const anim = setInterval(() => {
-                    x += vx;
-                    y += vy;
-                    opacity -= 0.02;
-                    heart.style.left = x + 'px';
-                    heart.style.top = y + 'px';
-                    heart.style.opacity = opacity;
-                    if (opacity <= 0) {
-                        clearInterval(anim);
-                        heart.remove();
-                    }
-                }, 16);
-            }
-        }
-
-        // --- FINAL ---
-        function showFinalScreen() {
-            gameActive = false;
-            btn.style.display = 'none';
-            document.getElementById('final-screen').style.display = 'flex';
-            
-            const sub = "Jhanny, empezamos esto como un juego, pero cada mensaje que leíste es una verdad que guardo. Has tenido la paciencia para llegar hasta aquí, y yo tengo el corazón listo para preguntarte...";
-            typeEffect(document.getElementById('final-sub'), sub);
-            
-            setTimeout(() => {
-                document.getElementById('final-msg').innerText = "¿Jhanny, quieres ser mi novia?";
-            }, 3000);
-        }
-
-        function typeEffect(element, text) {
-            let i = 0;
-            element.innerText = "";
-            const timer = setInterval(() => {
-                if (i < text.length) {
-                    element.innerText += text.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(timer);
+            // Lógica de Niveles (Más fácil que antes)
+            if (level === 1) {
+                // Nivel 1: El botón se rinde fácil
+                if (clicks >= 5) {
+                    nextLevel(2);
                 }
-            }, 40);
-        }
-
-        function celebrate(isYes) {
-            const screen = document.getElementById('final-screen');
-            const btns = document.getElementById('final-btns-group');
-            btns.style.display = 'none';
-
-            if (isYes) {
-                screen.style.background = 'linear-gradient(to bottom, #ff4d6d, #ff758f)';
-                document.getElementById('final-msg').innerText = "¡ERES LO MEJOR QUE ME HA PASADO! ❤️";
-                document.getElementById('final-sub').innerText = "Prometo cuidarte, hacerte reír y nunca dejar de jugar contigo. Te quiero, Jhanny.";
-                
-                // Lluvia masiva de corazones
-                setInterval(() => {
-                    const h = document.createElement('div');
-                    h.innerHTML = "❤️";
-                    h.style.position = 'fixed';
-                    h.style.left = Math.random() * 100 + 'vw';
-                    h.style.top = '-50px';
-                    h.style.fontSize = '30px';
-                    h.style.transition = 'all 3s linear';
-                    document.body.appendChild(h);
-                    setTimeout(() => {
-                        h.style.top = '110vh';
-                        h.style.transform = `rotate(${Math.random() * 360}deg)`;
-                    }, 10);
-                    setTimeout(() => h.remove(), 3000);
-                }, 100);
-            } else {
-                document.getElementById('final-msg').innerText = "Entiendo, Jhanny... 💔";
-                document.getElementById('final-sub').innerText = "Gracias por jugar conmigo hasta el final. Siempre serás alguien muy especial para este León.";
-                screen.style.background = "#2b2d42";
+            } else if (level === 2) {
+                // Nivel 2: El botón huye DESPUÉS del clic
+                moveButton();
+                if (clicks >= 15) {
+                    nextLevel(3);
+                }
+            } else if (level === 3) {
+                // Nivel 3: El botón huye rápido y cambia de tamaño
+                moveButton();
+                btn.style.transform = `scale(${0.6 + Math.random() * 0.8})`;
+                if (clicks >= 30) {
+                    win();
+                }
             }
         }
 
-        // Inicializar
-        window.onload = () => {
-            btn.style.left = "50%";
-            btn.style.top = "50%";
-            btn.style.transform = "translate(-50%, -50%)";
-        };
+        function moveButton() {
+            btnMoving = true;
+            btn.style.transition = 'all 0.3s ease-out';
+            const area = document.getElementById('game-area');
+            const maxX = area.clientWidth - btn.clientWidth;
+            const maxY = area.clientHeight - btn.clientHeight;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            btn.style.position = 'absolute';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+            setTimeout(() => btnMoving = false, 300);
+        }
+
+        function nextLevel(n) {
+            level = n;
+            document.getElementById('lvl').innerText = n;
+            bubble.innerText = `¡NIVEL ${n}! Ahora sí me voy a mover...`;
+            bubble.style.color = 'var(--rosa-amor)';
+            btn.style.transition = 'all 0.5s ease-out';
+            if(n===3) btn.innerText = 'SÍ'; // Engaño
+        }
+
+        function win() {
+            gameRunning = false;
+            document.getElementById('win-screen').style.display = 'flex';
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
     </script>
 </body>
 </html>
